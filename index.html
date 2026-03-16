@@ -488,19 +488,29 @@
           <span class="tag">1인 개발</span>
           <span class="tag">모래 시뮬레이션</span>
           <span class="tag">통계 기반 봇</span>
-          <span class="tag">2026.02 – 진행 중</span>
+          <span class="tag">v0.8</span>
+          <span class="tag">2026.02 – 2026.03</span>
         </div>
 
         <div class="project-logo-wrap">
-          <img src="./assets/c1_sandbingo_logo.png" alt="Sand Bingo 로고">
+          <img src="./assets/c1_sandbingo_logo.png" alt="Sand Bingo 로고" style="width:60%;">
         </div>
-        <p class="project-tagline">빙고 게임과 모래 시뮬레이션을 결합한 싱글플레이 퍼즐 게임</p>
 
-        <details class="card-section" open>
+        <div style="position:relative; width:60%; margin:10px auto 0;">
+          <video class="project-video" src="./assets/c1_sandbingo_mp4.mp4"
+            autoplay loop muted playsinline style="width:100%; margin:0;"></video>
+          <span style="position:absolute; bottom:8px; right:10px; font-family:'JetBrains Mono',monospace; font-size:11px; color:rgba(255,255,255,0.85); background:rgba(0,0,0,0.45); padding:2px 7px; border-radius:3px; pointer-events:none;">▶ MP4</span>
+        </div>
+
+        <div style="margin-top:14px;">
+          <p class="project-tagline" style="text-align:left;">· 빙고 게임과 모래 시뮬레이션을 결합한 싱글플레이 퍼즐 게임</p>
+          <p class="project-tagline" style="text-align:left;">· 플레이어의 모래 투하 분포를 계산하여 대응하는 봇 구현</p>
+          <p class="project-tagline" style="text-align:left;">· 현재 핵심 게임플레이 구현 완료 및 추가 컨텐츠 기획 중</p>
+        </div>
+
+        <details class="card-section">
           <summary>스크린샷</summary>
           <div class="card-section-body">
-            <video class="project-video" src="./assets/c1_sandbingo_mp4.mp4"
-              autoplay loop muted playsinline></video>
             <div class="screenshot-grid">
               <img src="./assets/c1_sandbingo1.jpg" alt="Sand Bingo 스크린샷 1">
               <img src="./assets/c1_sandbingo2.jpg" alt="Sand Bingo 스크린샷 2">
@@ -557,9 +567,9 @@ bool UpdateSand(int x, int y)
     { /* 반대 대각 */ ... return true; }
     return false;
 }</pre>
-                  <p class="func-desc">· 픽셀 단위 셀룰러 오토마타*로 모래 물리를 구현. 매 행마다 스캔 방향을 무작위로 반전시켜 좌우 편향 없는 자연스러운 낙하 구현</p>
-                  <p class="func-desc" style="padding-left:12px; font-size:12.5px; color:var(--text-muted);">* 각 모래 입자가 매 시뮬레이션 스텝마다 아래, 좌하, 우하 순서로 이동 가능 여부를 판단해 자연스러운 낙하와 쌓임을 구현</p>
-                  <p class="func-desc">· 변경이 발생한 픽셀/셀만 dirty set에 등록해 해당 프레임에 변경된 영역만 렌더링하는 최적화 구조</p>
+                  <p class="func-desc">· 픽셀 단위 셀룰러 오토마타*로 모래 물리를 구현. 매 행마다 스캔 방향을 무작위로 반전시켜 좌우 편향 없는 자연스러운 낙하를 구현함</p>
+                  <p class="func-desc" style="padding-left:12px; font-size:12.5px; color:var(--text-muted);">* 각 모래 입자가 매 시뮬레이션 스텝마다 아래, 좌하, 우하 순서로 이동 가능 여부를 판단해 자연스러운 낙하와 모래 누적을 구현</p>
+                  <p class="func-desc">· 변경이 발생한 픽셀/셀만 dirty set에 등록해 해당 프레임에 변경된 영역만을 렌더링하여 연산을 최적화함</p>
                 </div>
               </details>
               <details class="func-item">
@@ -597,8 +607,8 @@ IEnumerator WaitForSandSettlement()
     }
     SwitchPlayer();
 }</pre>
-                  <p class="func-desc">· 프레임레이트와 무관하게 모래 물리가 일정한 속도로 동작하도록 경과 시간을 누적해 고정 간격으로 시뮬레이션을 실행. FPS가 급락해도 한 프레임에 최대 3회로 실행 횟수를 제한해 연산 폭주를 방지</p>
-                  <p class="func-desc">· 모래 정착 판정을 단순 대기가 아닌 <code>isSandMoving</code> 플래그 감시 방식으로 구현. 정착 후 점수 연산, 셀 제거, 추가 정착 대기를 코루틴으로 연쇄 처리</p>
+                  <p class="func-desc">· 프레임레이트와 무관하게 모래 물리가 일정한 속도로 동작하도록 경과 시간을 누적해 고정 간격으로 시뮬레이션을 실행, FPS가 급락해도 한 프레임에 최대 3회로 실행 횟수를 제한해 과다한 연산을 방지함</p>
+                  <p class="func-desc">· 모래 정착 판정을 단순 대기가 아닌 <code>isSandMoving</code> 플래그 확인 방식으로 구현함. 정착 후 점수 연산, 셀 제거, 추가 정착 대기를 코루틴으로 연쇄 처리함</p>
                 </div>
               </details>
               <details class="func-item">
@@ -617,7 +627,7 @@ IEnumerator WaitForSandSettlement()
     }
     standardDeviation = Mathf.Sqrt(varianceSum / oasisSandXPositions.Count);
 }
-void ExecuteEasyBot()  // 2점 투하, 작은 크기
+void ExecuteEasyBot()  // 2개 투하, 작은 크기
 {
     float offset = Mathf.Max(standardDeviation, cellPixelSize * 0.5f);
     float leftX = averageX - offset;
@@ -625,15 +635,15 @@ void ExecuteEasyBot()  // 2점 투하, 작은 크기
     sandSimulator.DropSandRectangle(leftX, targetY, 1.0f, 0.8f, BrownSand);
     sandSimulator.DropSandRectangle(rightX, targetY, 1.0f, 0.8f, BrownSand);
 }
-void ExecuteHardBot()  // 3점 투하, 큰 크기
+void ExecuteHardBot()  // 3개 투하, 중간 크기
 {
     float offset = Mathf.Max(standardDeviation, cellPixelSize * 0.5f);
     sandSimulator.DropSandChunk(averageX - offset, targetY, BrownSand);
     sandSimulator.DropSandChunk(averageX,           targetY, BrownSand);
     sandSimulator.DropSandChunk(averageX + offset,  targetY, BrownSand);
 }</pre>
-                  <p class="func-desc">· 플레이어가 모래를 놓은 X좌표를 매 턴 누적 수집해 평균과 표준편차를 계산, 모래 분포의 중심과 퍼짐을 수치화</p>
-                  <p class="func-desc">· 표준편차를 오프셋으로 활용해 플레이어 낙하 패턴에 반응하는 적응형 투하 위치 결정. 난이도별로 투하 횟수(2개/3개)와 크기(0.8셀/1.0셀/1.2셀)를 다르게 적용해 체감 난이도 차별화</p>
+                  <p class="func-desc">· 플레이어가 모래를 놓은 X좌표를 매 턴 수집해 평균과 표준편차를 계산, 모래의 중심과 분포를 수치화함</p>
+                  <p class="func-desc">· 표준편차를 오프셋으로 활용해 플레이어의 투하 분포에 대응하여 봇의 투하 위치를 결정함. 단계별로 투하 횟수(2개/3개)와 크기(0.8셀/1.0셀/1.2셀)를 다르게 적용해 난이도를 차별화함</p>
                 </div>
               </details>
             </div>
@@ -655,11 +665,27 @@ void ExecuteHardBot()  // 3점 투하, 큰 크기
           <span class="tag">모작</span>
           <span class="tag">2026.01</span>
         </div>
-        <p>TEST</p>
-        <h3>주요 구현 사항</h3>
-        <ul>
-          <li>TEST</li>
-        </ul>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px;">
+          <img src="./assets/c2_sisyphus1.jpg" alt="Sisyphus 스크린샷 1" style="width:100%; border-radius:4px; border:1px solid var(--border); display:block;">
+          <img src="./assets/c2_sisyphus2.jpg" alt="Sisyphus 스크린샷 2" style="width:100%; border-radius:4px; border:1px solid var(--border); display:block;">
+        </div>
+
+        <details class="card-section">
+          <summary>주요 구현 사항</summary>
+          <div class="card-section-body">
+            <div class="func-list">
+              <details class="func-item">
+                <summary>TEMP</summary>
+                <div class="func-body">
+                  <pre class="code-box">// 코드를 여기에 작성하세요</pre>
+                  <p class="func-desc">설명을 여기에 작성하세요.</p>
+                </div>
+              </details>
+            </div>
+          </div>
+        </details>
+
         <div class="project-links">
           <a href="https://github.com/yangchang-n/microgame-paradise/tree/main/04_Sisyphus" target="_blank">🔗 GitHub 저장소 →</a>
         </div>
@@ -671,13 +697,27 @@ void ExecuteHardBot()  // 3점 투하, 큰 크기
           <span class="tag">Unity</span>
           <span class="tag">C#</span>
           <span class="tag">1인 개발</span>
+          <span class="tag">습작</span>
           <span class="tag">2025.12</span>
         </div>
-        <p>TEST</p>
-        <h3>주요 구현 사항</h3>
-        <ul>
-          <li>TEST</li>
-        </ul>
+
+        <img src="./assets/c3_flightshooter1.jpg" alt="Flight Shooter 스크린샷" style="width:100%; border-radius:4px; border:1px solid var(--border); display:block; margin-top:14px;">
+
+        <details class="card-section">
+          <summary>주요 구현 사항</summary>
+          <div class="card-section-body">
+            <div class="func-list">
+              <details class="func-item">
+                <summary>TEMP</summary>
+                <div class="func-body">
+                  <pre class="code-box">// 코드를 여기에 작성하세요</pre>
+                  <p class="func-desc">설명을 여기에 작성하세요.</p>
+                </div>
+              </details>
+            </div>
+          </div>
+        </details>
+
         <div class="project-links">
           <a href="https://github.com/yangchang-n/microgame-paradise/tree/main/02_FlightShooter" target="_blank">🔗 GitHub 저장소 →</a>
         </div>
