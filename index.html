@@ -152,13 +152,13 @@
     .screenshot-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin: 14px 0 0;
+      gap: 0;
+      margin: 0;
     }
     .screenshot-grid img {
       width: 100%;
-      border-radius: 4px;
-      border: 1px solid var(--border);
+      border-radius: 0;
+      border: none;
       display: block;
     }
 
@@ -179,6 +179,78 @@
       display: block;
       margin: 10px 0 0;
     }
+
+    /* ── 로고 및 한 줄 소개 ── */
+    .project-logo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 16px 0 4px;
+    }
+    .project-logo-wrap img {
+      width: 50%;
+      display: block;
+    }
+    .project-tagline {
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-sub);
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+
+    /* ── 큰 섹션 펼치기 ── */
+    details.main-section > summary {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      list-style: none;
+      padding-bottom: 10px;
+      border-bottom: 1.5px solid var(--border);
+      margin-bottom: 20px;
+    }
+    details.main-section > summary::-webkit-details-marker { display: none; }
+    details.main-section > summary::before {
+      content: '▶';
+      font-size: 9px;
+      color: var(--highlight);
+      transition: transform .2s;
+      flex-shrink: 0;
+    }
+    details.main-section[open] > summary::before { transform: rotate(90deg); }
+    details.main-section > summary h2 {
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+
+    /* ── 큰 섹션 펼치기 ── */
+    details.card-section {
+      margin-top: 6px;
+    }
+    details.card-section summary {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--accent-light);
+      padding: 12px 0;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+    }
+    details.card-section summary::-webkit-details-marker { display: none; }
+    details.card-section summary::before {
+      content: '▶';
+      font-size: 9px;
+      color: var(--highlight);
+      transition: transform .2s;
+    }
+    details.card-section[open] summary::before { transform: rotate(90deg); }
+    details.card-section summary:hover { color: var(--highlight); }
+    .card-section-body { padding-bottom: 8px; }
 
     /* ── 함수 펼치기 ── */
     .func-list { margin: 10px 0 0; display: flex; flex-direction: column; gap: 8px; }
@@ -389,8 +461,8 @@
       <li class="sub"><a href="#other1">— 기타 프로젝트 A</a></li>
       <li class="sub"><a href="#other2">— 기타 프로젝트 B</a></li>
       <li class="sub"><a href="#other3">— 기타 프로젝트 C</a></li>
-      <li><a href="#edu-activities">교육 및 활동</a></li>
-      <li><a href="#edu-qual">학력 및 자격</a></li>
+      <li><a href="#trn-act">교육 및 활동</a></li>
+      <li><a href="#edu-cert">학력 및 자격증</a></li>
     </ul>
   </aside>
 
@@ -410,48 +482,64 @@
           <span class="tag">2026.02 – 진행 중</span>
         </div>
 
-        <div class="screenshot-grid">
-          <img src="./assets/c1_sandbingo1.jpg" alt="Sand Bingo 스크린샷 1">
-          <img src="./assets/c1_sandbingo2.jpg" alt="Sand Bingo 스크린샷 2">
-          <img src="./assets/c1_sandbingo3.jpg" alt="Sand Bingo 스크린샷 3">
-          <img src="./assets/c1_sandbingo4.jpg" alt="Sand Bingo 스크린샷 4">
+        <div class="project-logo-wrap">
+          <img src="./assets/c1_sandbingo_logo.png" alt="Sand Bingo 로고">
         </div>
+        <p class="project-tagline">빙고 게임과 모래 시뮬레이션을 결합한 싱글플레이 퍼즐 게임</p>
 
-        <video class="project-video" src="./assets/c1_sandbingo_mp4.mp4"
-          autoplay loop muted playsinline></video>
-
-        <p style="margin-top:16px;">TEST</p>
-
-        <h3>스크립트 구조</h3>
-        <img class="diagram-img" src="./assets/c1_sandbingo_diagram.jpg" alt="Sand Bingo 스크립트 구조 다이어그램">
-
-        <h3 style="margin-top:24px;">주요 구현 사항</h3>
-        <div class="func-list">
-          <details class="func-item">
-            <summary>TEMP</summary>
-            <div class="func-body">
-              <pre class="code-box">// 코드를 여기에 작성하세요</pre>
-              <p class="func-desc">설명을 여기에 작성하세요.</p>
+        <details class="card-section">
+          <summary>스크린샷</summary>
+          <div class="card-section-body">
+            <div class="screenshot-grid">
+              <img src="./assets/c1_sandbingo1.jpg" alt="Sand Bingo 스크린샷 1">
+              <img src="./assets/c1_sandbingo2.jpg" alt="Sand Bingo 스크린샷 2">
+              <img src="./assets/c1_sandbingo3.jpg" alt="Sand Bingo 스크린샷 3">
+              <img src="./assets/c1_sandbingo4.jpg" alt="Sand Bingo 스크린샷 4">
             </div>
-          </details>
-          <details class="func-item">
-            <summary>TEMP</summary>
-            <div class="func-body">
-              <pre class="code-box">// 코드를 여기에 작성하세요</pre>
-              <p class="func-desc">설명을 여기에 작성하세요.</p>
+            <video class="project-video" src="./assets/c1_sandbingo_mp4.mp4"
+              autoplay loop muted playsinline></video>
+          </div>
+        </details>
+
+        <details class="card-section">
+          <summary>스크립트 구조</summary>
+          <div class="card-section-body">
+            <img class="diagram-img" src="./assets/c1_sandbingo_diagram.jpg" alt="Sand Bingo 스크립트 구조 다이어그램">
+          </div>
+        </details>
+
+        <details class="card-section">
+          <summary>주요 구현 사항</summary>
+          <div class="card-section-body">
+            <div class="func-list">
+              <details class="func-item">
+                <summary>TEMP</summary>
+                <div class="func-body">
+                  <pre class="code-box">// 코드를 여기에 작성하세요</pre>
+                  <p class="func-desc">설명을 여기에 작성하세요.</p>
+                </div>
+              </details>
+              <details class="func-item">
+                <summary>TEMP</summary>
+                <div class="func-body">
+                  <pre class="code-box">// 코드를 여기에 작성하세요</pre>
+                  <p class="func-desc">설명을 여기에 작성하세요.</p>
+                </div>
+              </details>
+              <details class="func-item">
+                <summary>TEMP</summary>
+                <div class="func-body">
+                  <pre class="code-box">// 코드를 여기에 작성하세요</pre>
+                  <p class="func-desc">설명을 여기에 작성하세요.</p>
+                </div>
+              </details>
             </div>
-          </details>
-          <details class="func-item">
-            <summary>TEMP</summary>
-            <div class="func-body">
-              <pre class="code-box">// 코드를 여기에 작성하세요</pre>
-              <p class="func-desc">설명을 여기에 작성하세요.</p>
-            </div>
-          </details>
-        </div>
+          </div>
+        </details>
 
         <div class="project-links">
           <a href="https://github.com/yangchang-n/SandBingo" target="_blank">🔗 GitHub 저장소 →</a>
+          <a href="https://github.com/yangchang-n/SandBingo/releases/tag/v0.8" target="_blank">📦 최신 Release →</a>
         </div>
       </div>
 
@@ -530,48 +618,52 @@
       </div>
     </section>
 
-    <section id="edu-activities">
-      <h2>교육 및 활동</h2>
-      <div class="timeline">
-        <div class="timeline-item">
-          <p class="period">2025. 02</p>
-          <p class="tl-title">삼성전자 DX 부문 동계 대학생 S/W 알고리즘 특강</p>
-          <p>삼성전자</p>
-          <p>자료구조 및 알고리즘 학습, 삼성전자 S/W 개발 임직원 멘토링 교육 총 4주간 이수 및 수료</p>
+    <section id="trn-act">
+      <details class="main-section">
+        <summary><h2>교육 및 활동</h2></summary>
+        <div class="timeline">
+          <div class="timeline-item">
+            <p class="period">2025. 02</p>
+            <p class="tl-title">삼성전자 DX 부문 동계 대학생 S/W 알고리즘 특강</p>
+            <p>삼성전자</p>
+            <p>자료구조 및 알고리즘 학습, 삼성전자 S/W 개발 임직원 멘토링 교육 총 4주간 이수 및 수료</p>
+          </div>
+          <div class="timeline-item">
+            <p class="period">2023. 05 – 2023. 11</p>
+            <p class="tl-title">Project Astro-Warp CBT</p>
+            <p>HoYoverse</p>
+            <p>서브컬쳐 턴제 RPG 〈붕괴: 스타레일〉 비공개 베타테스트 심층 그룹 참여 (v1.2 – v1.5)</p>
+          </div>
+          <div class="timeline-item">
+            <p class="period">2022. 04 – 2022. 10</p>
+            <p class="tl-title">데이터기반 인공지능 시스템 엔지니어 양성 과정 7기</p>
+            <p>영우글로벌러닝 (현 에티버스러닝)</p>
+            <p>데이터분석 · 머신러닝 · 자연어처리 · 컴퓨터비전 교육 총 880시간 이수 및 수료</p>
+          </div>
         </div>
-        <div class="timeline-item">
-          <p class="period">2023. 05 – 2023. 11</p>
-          <p class="tl-title">Project Astro-Warp CBT</p>
-          <p>HoYoverse</p>
-          <p>서브컬쳐 턴제 RPG 〈붕괴: 스타레일〉 비공개 베타테스트 심층 그룹 참여 (v1.2 – v1.5)</p>
-        </div>
-        <div class="timeline-item">
-          <p class="period">2022. 04 – 2022. 10</p>
-          <p class="tl-title">데이터기반 인공지능 시스템 엔지니어 양성 과정 7기</p>
-          <p>영우글로벌러닝 (현 에티버스러닝)</p>
-          <p>데이터분석 · 머신러닝 · 자연어처리 · 컴퓨터비전 교육 총 880시간 이수 및 수료</p>
-        </div>
-      </div>
+      </details>
     </section>
 
-    <section id="edu-qual">
-      <h2>학력 및 자격</h2>
-      <div class="timeline">
-        <div class="timeline-item">
-          <p class="period">2023. 09</p>
-          <p class="tl-title">정보처리기사</p>
-          <p>한국산업인력공단</p>
+    <section id="edu-cert">
+      <details class="main-section">
+        <summary><h2>학력 및 자격증</h2></summary>
+        <div class="timeline">
+          <div class="timeline-item">
+            <p class="period">2023. 09</p>
+            <p class="tl-title">정보처리기사</p>
+            <p>한국산업인력공단</p>
+          </div>
+          <div class="timeline-item">
+            <p class="period">2022. 02</p>
+            <p class="tl-title">연세대학교 졸업</p>
+            <p>이학사 (물리학) · 문학사 (철학) — 복수전공</p>
+          </div>
+          <div class="timeline-item">
+            <p class="period">2017. 03</p>
+            <p class="tl-title">연세대학교 이과대학 물리학과 입학</p>
+          </div>
         </div>
-        <div class="timeline-item">
-          <p class="period">2022. 02</p>
-          <p class="tl-title">연세대학교 졸업</p>
-          <p>이학사 (물리학) · 문학사 (철학) — 복수전공</p>
-        </div>
-        <div class="timeline-item">
-          <p class="period">2017. 03</p>
-          <p class="tl-title">연세대학교 이과대학 물리학과 입학</p>
-        </div>
-      </div>
+      </details>
     </section>
 
   </main>
