@@ -152,23 +152,23 @@
     .screenshot-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0;
+      gap: 8px;
       margin: 0;
     }
     .screenshot-grid img {
       width: 100%;
-      border-radius: 0;
-      border: none;
+      border-radius: 4px;
+      border: 1px solid var(--border);
       display: block;
     }
 
     /* ── 프로젝트 영상 ── */
     .project-video {
-      width: 100%;
+      width: 75%;
+      display: block;
+      margin: 0 auto 8px;
       border-radius: 4px;
       border: 1px solid var(--border);
-      display: block;
-      margin-top: 8px;
     }
 
     /* ── 다이어그램 ── */
@@ -193,7 +193,8 @@
     }
     .project-tagline {
       text-align: center;
-      font-size: 14px;
+      font-size: 16px;
+      font-weight: 500;
       color: var(--text-sub);
       margin-top: 10px;
       margin-bottom: 4px;
@@ -296,7 +297,15 @@
       color: var(--text-main);
       margin-bottom: 10px;
     }
-    .func-desc { font-size: 13.5px; color: var(--text-sub); }
+    .func-desc { font-size: 13.5px; color: var(--text-sub); margin-bottom: 6px; }
+    .func-desc code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      background: #f0eeff;
+      color: var(--accent-light);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
 
     /* ── 프로젝트 카드 ── */
     .project-card {
@@ -487,17 +496,17 @@
         </div>
         <p class="project-tagline">빙고 게임과 모래 시뮬레이션을 결합한 싱글플레이 퍼즐 게임</p>
 
-        <details class="card-section">
+        <details class="card-section" open>
           <summary>스크린샷</summary>
           <div class="card-section-body">
+            <video class="project-video" src="./assets/c1_sandbingo_mp4.mp4"
+              autoplay loop muted playsinline></video>
             <div class="screenshot-grid">
               <img src="./assets/c1_sandbingo1.jpg" alt="Sand Bingo 스크린샷 1">
               <img src="./assets/c1_sandbingo2.jpg" alt="Sand Bingo 스크린샷 2">
               <img src="./assets/c1_sandbingo3.jpg" alt="Sand Bingo 스크린샷 3">
               <img src="./assets/c1_sandbingo4.jpg" alt="Sand Bingo 스크린샷 4">
             </div>
-            <video class="project-video" src="./assets/c1_sandbingo_mp4.mp4"
-              autoplay loop muted playsinline></video>
           </div>
         </details>
 
@@ -513,24 +522,118 @@
           <div class="card-section-body">
             <div class="func-list">
               <details class="func-item">
-                <summary>TEMP</summary>
+                <summary>SandSimulator</summary>
                 <div class="func-body">
-                  <pre class="code-box">// 코드를 여기에 작성하세요</pre>
-                  <p class="func-desc">설명을 여기에 작성하세요.</p>
+                  <pre class="code-box">public bool SimulatePhysics()
+{
+    bool sandMoved = false;
+    for (int y = 1; y &lt; height - 1; y++)
+    {
+        bool scanLeft = Random.value > 0.5f;
+        for (int x = 1; x &lt; width - 1; x++)
+        {
+            int currentX = scanLeft ? x : width - 1 - x;
+            if (IsSand(grid[currentX, y]))
+                if (UpdateSand(currentX, y)) sandMoved = true;
+        }
+    }
+    return sandMoved;
+}
+bool UpdateSand(int x, int y)
+{
+    CellType sandType = grid[x, y];
+    if (grid[x, y - 1] == CellType.Empty)
+    {
+        grid[x, y] = CellType.Empty;
+        grid[x, y - 1] = sandType;
+        MarkPixelDirty(x, y); MarkPixelDirty(x, y - 1);
+        MarkCellDirtyByPixel(x, y); MarkCellDirtyByPixel(x, y - 1);
+        return true;
+    }
+    int direction = Random.value > 0.5f ? 1 : -1;
+    if (grid[x + direction, y - 1] == CellType.Empty)
+    { /* 대각 낙하 */ ... return true; }
+    else if (grid[x - direction, y - 1] == CellType.Empty)
+    { /* 반대 대각 */ ... return true; }
+    return false;
+}</pre>
+                  <p class="func-desc">· 픽셀 단위 셀룰러 오토마타*로 모래 물리를 구현. 매 행마다 스캔 방향을 무작위로 반전시켜 좌우 편향 없는 자연스러운 낙하 구현</p>
+                  <p class="func-desc" style="padding-left:12px; font-size:12.5px; color:var(--text-muted);">* 각 모래 입자가 매 시뮬레이션 스텝마다 아래, 좌하, 우하 순서로 이동 가능 여부를 판단해 자연스러운 낙하와 쌓임을 구현</p>
+                  <p class="func-desc">· 변경이 발생한 픽셀/셀만 dirty set에 등록해 해당 프레임에 변경된 영역만 렌더링하는 최적화 구조</p>
                 </div>
               </details>
               <details class="func-item">
-                <summary>TEMP</summary>
+                <summary>GameManager</summary>
                 <div class="func-body">
-                  <pre class="code-box">// 코드를 여기에 작성하세요</pre>
-                  <p class="func-desc">설명을 여기에 작성하세요.</p>
+                  <pre class="code-box">void UpdatePhysicsWithFixedTimestep()
+{
+    physicsAccumulator += Time.deltaTime;
+    if (physicsAccumulator > PhysicsTimestep * 3)
+        physicsAccumulator = PhysicsTimestep * 3;
+    while (physicsAccumulator >= PhysicsTimestep)
+    {
+        UpdateSimulation();
+        physicsAccumulator -= PhysicsTimestep;
+    }
+}
+IEnumerator WaitForSandSettlement()
+{
+    isSandMoving = false;
+    float settlementTimer = 0f;
+    while (settlementTimer &lt; 0.4f)
+    {
+        if (isSandMoving) { settlementTimer = 0f; isSandMoving = false; }
+        else settlementTimer += Time.deltaTime;
+        yield return null;
+    }
+    // 점수 계산 → 셀 제거 → 재귀 호출 또는 플레이어 전환
+    ScoreResult result = sandSimulator.CalculateScoreAndGetCells();
+    if (result.cellsToRemove.Count > 0)
+    {
+        SetCurrentStageScore(GetCurrentStageScore() + result.oasisScore - result.mudScore);
+        yield return new WaitForSeconds(0.6f);
+        sandSimulator.RemoveCells(result.cellsToRemove);
+        StartCoroutine(WaitForSandSettlement()); yield break;
+    }
+    SwitchPlayer();
+}</pre>
+                  <p class="func-desc">· 프레임레이트와 무관하게 모래 물리가 일정한 속도로 동작하도록 경과 시간을 누적해 고정 간격으로 시뮬레이션을 실행. FPS가 급락해도 한 프레임에 최대 3회로 실행 횟수를 제한해 연산 폭주를 방지</p>
+                  <p class="func-desc">· 모래 정착 판정을 단순 대기가 아닌 <code>isSandMoving</code> 플래그 감시 방식으로 구현. 정착 후 점수 연산, 셀 제거, 추가 정착 대기를 코루틴으로 연쇄 처리</p>
                 </div>
               </details>
               <details class="func-item">
-                <summary>TEMP</summary>
+                <summary>BotController</summary>
                 <div class="func-body">
-                  <pre class="code-box">// 코드를 여기에 작성하세요</pre>
-                  <p class="func-desc">설명을 여기에 작성하세요.</p>
+                  <pre class="code-box">void CalculateStatistics()
+{
+    float sum = 0;
+    foreach (int x in oasisSandXPositions) sum += x;
+    averageX = sum / oasisSandXPositions.Count;
+    float varianceSum = 0;
+    foreach (int x in oasisSandXPositions)
+    {
+        float diff = x - averageX;
+        varianceSum += diff * diff;
+    }
+    standardDeviation = Mathf.Sqrt(varianceSum / oasisSandXPositions.Count);
+}
+void ExecuteEasyBot()  // 2점 투하, 작은 크기
+{
+    float offset = Mathf.Max(standardDeviation, cellPixelSize * 0.5f);
+    float leftX = averageX - offset;
+    float rightX = averageX + offset;
+    sandSimulator.DropSandRectangle(leftX, targetY, 1.0f, 0.8f, BrownSand);
+    sandSimulator.DropSandRectangle(rightX, targetY, 1.0f, 0.8f, BrownSand);
+}
+void ExecuteHardBot()  // 3점 투하, 큰 크기
+{
+    float offset = Mathf.Max(standardDeviation, cellPixelSize * 0.5f);
+    sandSimulator.DropSandChunk(averageX - offset, targetY, BrownSand);
+    sandSimulator.DropSandChunk(averageX,           targetY, BrownSand);
+    sandSimulator.DropSandChunk(averageX + offset,  targetY, BrownSand);
+}</pre>
+                  <p class="func-desc">· 플레이어가 모래를 놓은 X좌표를 매 턴 누적 수집해 평균과 표준편차를 계산, 모래 분포의 중심과 퍼짐을 수치화</p>
+                  <p class="func-desc">· 표준편차를 오프셋으로 활용해 플레이어 낙하 패턴에 반응하는 적응형 투하 위치 결정. 난이도별로 투하 횟수(2개/3개)와 크기(0.8셀/1.0셀/1.2셀)를 다르게 적용해 체감 난이도 차별화</p>
                 </div>
               </details>
             </div>
