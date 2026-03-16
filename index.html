@@ -148,6 +148,84 @@
     }
     section li { margin-bottom: 5px; }
 
+    /* ── 스크린샷 그리드 ── */
+    .screenshot-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 14px 0 0;
+    }
+    .screenshot-grid img {
+      width: 100%;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      display: block;
+    }
+
+    /* ── 프로젝트 영상 ── */
+    .project-video {
+      width: 100%;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      display: block;
+      margin-top: 8px;
+    }
+
+    /* ── 다이어그램 ── */
+    .diagram-img {
+      width: 100%;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      display: block;
+      margin: 10px 0 0;
+    }
+
+    /* ── 함수 펼치기 ── */
+    .func-list { margin: 10px 0 0; display: flex; flex-direction: column; gap: 8px; }
+    details.func-item {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    details.func-item summary {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent-light);
+      padding: 10px 14px;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f8f9fb;
+      transition: background .15s;
+    }
+    details.func-item summary::-webkit-details-marker { display: none; }
+    details.func-item summary::before {
+      content: '▶';
+      font-size: 9px;
+      color: var(--highlight);
+      transition: transform .2s;
+    }
+    details.func-item[open] summary::before { transform: rotate(90deg); }
+    details.func-item summary:hover { background: #f0eeff; }
+    details.func-item[open] summary { border-bottom: 1px solid var(--border); }
+    .func-body { padding: 14px; }
+    pre.code-box {
+      background: #f5f5f5;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 12px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      line-height: 1.7;
+      overflow-x: auto;
+      color: var(--text-main);
+      margin-bottom: 10px;
+    }
+    .func-desc { font-size: 13.5px; color: var(--text-sub); }
+
     /* ── 프로젝트 카드 ── */
     .project-card {
       border: 1px solid var(--border);
@@ -331,11 +409,47 @@
           <span class="tag">통계 기반 봇</span>
           <span class="tag">2026.02 – 진행 중</span>
         </div>
-        <p>TEST</p>
-        <h3>주요 구현 사항</h3>
-        <ul>
-          <li>TEST</li>
-        </ul>
+
+        <div class="screenshot-grid">
+          <img src="./assets/c1_sandbingo1.jpg" alt="Sand Bingo 스크린샷 1">
+          <img src="./assets/c1_sandbingo2.jpg" alt="Sand Bingo 스크린샷 2">
+          <img src="./assets/c1_sandbingo3.jpg" alt="Sand Bingo 스크린샷 3">
+          <img src="./assets/c1_sandbingo4.jpg" alt="Sand Bingo 스크린샷 4">
+        </div>
+
+        <video class="project-video" src="./assets/c1_sandbingo_mp4.mp4"
+          autoplay loop muted playsinline></video>
+
+        <p style="margin-top:16px;">TEST</p>
+
+        <h3>스크립트 구조</h3>
+        <img class="diagram-img" src="./assets/c1_sandbingo_diagram.jpg" alt="Sand Bingo 스크립트 구조 다이어그램">
+
+        <h3 style="margin-top:24px;">주요 구현 사항</h3>
+        <div class="func-list">
+          <details class="func-item">
+            <summary>TEMP</summary>
+            <div class="func-body">
+              <pre class="code-box">// 코드를 여기에 작성하세요</pre>
+              <p class="func-desc">설명을 여기에 작성하세요.</p>
+            </div>
+          </details>
+          <details class="func-item">
+            <summary>TEMP</summary>
+            <div class="func-body">
+              <pre class="code-box">// 코드를 여기에 작성하세요</pre>
+              <p class="func-desc">설명을 여기에 작성하세요.</p>
+            </div>
+          </details>
+          <details class="func-item">
+            <summary>TEMP</summary>
+            <div class="func-body">
+              <pre class="code-box">// 코드를 여기에 작성하세요</pre>
+              <p class="func-desc">설명을 여기에 작성하세요.</p>
+            </div>
+          </details>
+        </div>
+
         <div class="project-links">
           <a href="https://github.com/yangchang-n/SandBingo" target="_blank">🔗 GitHub 저장소 →</a>
         </div>
