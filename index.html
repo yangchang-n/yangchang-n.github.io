@@ -44,7 +44,7 @@
     /* ── 헤더 ── */
     header {
       grid-column: 1 / -1;
-      padding: 56px 0 36px;
+      padding: 56px 0 30px;
       border-bottom: 2px solid var(--accent);
       margin-bottom: 48px;
     }
@@ -55,9 +55,12 @@
       color: var(--accent);
       letter-spacing: -.02em;
       line-height: 1.2;
+      margin-left: 10px;
     }
     .contact-row {
       margin-top: 28px;
+      margin-left: 16px;
+      margin-bottom: -12px;
       display: flex;
       gap: 24px;
       flex-wrap: wrap;
@@ -69,6 +72,9 @@
       color: var(--text-muted);
       text-decoration: none;
       transition: color .15s;
+    }
+    .contact-row a#contact-email {
+      min-width: 150px;
     }
     .contact-row a:hover { color: var(--highlight); }
     .contact-row .sep { color: var(--border); user-select: none; }
@@ -140,13 +146,16 @@
       color: var(--accent-light);
       margin: 24px 0 8px;
     }
-    section p { color: var(--text-sub); margin-bottom: 12px; }
+    section p { color: var(--text-sub); margin-bottom: 4px; }
     section ul {
       color: var(--text-sub);
       padding-left: 20px;
       margin-bottom: 12px;
     }
     section li { margin-bottom: 5px; }
+
+    /* ── 타임라인 내 p 마진 초기화 ── */
+    .timeline-item p { margin-bottom: 2px; }
 
     /* ── 스크린샷 그리드 ── */
     .screenshot-grid {
@@ -194,10 +203,27 @@
     .project-tagline {
       text-align: center;
       font-size: 16px;
-      font-weight: 500;
+      font-weight: 300;
       color: var(--text-sub);
       margin-top: 10px;
       margin-bottom: 4px;
+    }
+    ul.project-features {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    ul.project-features li {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-sub);
+      margin-bottom: 2px;
+      padding-left: 1em;
+      text-indent: -1em;
+    }
+    ul.project-features li::before {
+      content: '- ';
+      color: var(--text-muted);
     }
 
     /* ── 큰 섹션 펼치기 ── */
@@ -275,11 +301,13 @@
       transition: background .15s;
     }
     details.func-item summary::-webkit-details-marker { display: none; }
+    details.func-item summary::marker { display: none; }
     details.func-item summary::before {
       content: '▶';
       font-size: 9px;
       color: var(--highlight);
       transition: transform .2s;
+      flex-shrink: 0;
     }
     details.func-item[open] summary::before { transform: rotate(90deg); }
     details.func-item summary:hover { background: #f0eeff; }
@@ -347,20 +375,8 @@
     }
     .project-links a:hover { border-bottom-color: var(--highlight); }
 
-    /* ── 스킬 ── */
-    .skill-group { margin-bottom: 20px; }
-    .skill-list { display: flex; flex-wrap: wrap; gap: 8px; }
-    .skill-item {
-      font-size: 13px;
-      padding: 5px 13px;
-      border-radius: 4px;
-      border: 1px solid var(--border);
-      color: var(--text-sub);
-    }
-    .skill-item.main { background: var(--accent); color: white; border-color: var(--accent); }
-    .skill-item.strong { background: #f0f4ff; color: var(--accent-light); border-color: #c8d5f5; }
-
-    /* ── 타임라인 ── */
+    /* ── 오른쪽 ── */
+    .right-aside {}
     .timeline { position: relative; padding-left: 22px; }
     .timeline::before {
       content: '';
@@ -387,25 +403,6 @@
       margin-bottom: 2px;
     }
     .tl-title { font-weight: 500; color: var(--accent); margin-bottom: 3px; }
-
-    /* ── 연락처 ── */
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .contact-item {
-      padding: 16px 18px;
-      border: 1px solid var(--border);
-      border-radius: 5px;
-    }
-    .c-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: var(--text-muted);
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      margin-bottom: 5px;
-    }
-    .c-value { font-size: 14px; color: var(--accent); font-weight: 500; word-break: break-all; }
-    .c-value a { color: var(--highlight); text-decoration: none; }
-    .c-value a:hover { text-decoration: underline; }
 
     /* ── 오른쪽 ── */
     .right-aside {}
@@ -439,22 +436,79 @@
       header, footer { grid-column: 1; }
       .contact-grid { grid-template-columns: 1fr; }
     }
+    /* ── PDF 모달 ── */
+    #pdf-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.6);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    #pdf-modal.open { display: flex; }
+    .pdf-modal-box {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      width: 80vw;
+      height: 88vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px rgba(0,0,0,.3);
+    }
+    .pdf-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .pdf-modal-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+    .pdf-modal-close {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--text-muted);
+      line-height: 1;
+      padding: 0 4px;
+      transition: color .15s;
+    }
+    .pdf-modal-close:hover { color: var(--highlight); }
+    #pdf-iframe {
+      width: 100%;
+      flex: 1;
+      border: none;
+    }
   </style>
 </head>
 <body>
 
-<div id="scroll-bar"></div>
+<!-- PDF 모달 -->
+<div id="pdf-modal">
+  <div class="pdf-modal-box">
+    <div class="pdf-modal-header">
+      <span class="pdf-modal-title" id="pdf-modal-title"></span>
+      <button class="pdf-modal-close" id="pdf-modal-close">✕</button>
+    </div>
+    <iframe id="pdf-iframe" src=""></iframe>
+  </div>
+</div>
 
 <div class="page-wrapper">
 
   <header>
     <h1>양창은 | 게임 개발 포트폴리오</h1>
     <div class="contact-row">
-      <a href="/cdn-cgi/l/email-protection#5723383a23383a3623381739362132257934383a"><span class="__cf_email__" data-cfemail="98ecf7f5ecf7f5f9ecf7d8f6f9eefdeab6fbf7f5">[email&#160;protected]</span></a>
+      <a id="contact-email" href="#">tomtomato@naver.com</a>
       <span class="sep">|</span>
       <a href="https://github.com/yangchang-n" target="_blank">github.com/yangchang-n</a>
-      <span class="sep">|</span>
-      <span>서울특별시 성북구</span>
     </div>
   </header>
 
@@ -467,9 +521,9 @@
       <li class="sub"><a href="#proj2">— Sisyphus</a></li>
       <li class="sub"><a href="#proj3">— Flight Shooter</a></li>
       <li><a href="#other-projects">기타 프로젝트</a></li>
-      <li class="sub"><a href="#other1">— 기타 프로젝트 A</a></li>
-      <li class="sub"><a href="#other2">— 기타 프로젝트 B</a></li>
-      <li class="sub"><a href="#other3">— 기타 프로젝트 C</a></li>
+      <li class="sub"><a href="#other1">— HoYoLab-box</a></li>
+      <li class="sub"><a href="#other2">— 아이유 TTS 제작</a></li>
+      <li class="sub"><a href="#other3">— For Life Photos</a></li>
       <li><a href="#trn-act">교육 및 활동</a></li>
       <li><a href="#edu-cert">학력 및 자격증</a></li>
     </ul>
@@ -503,9 +557,11 @@
         </div>
 
         <div style="margin-top:26px; margin-bottom:14px;">
-          <p class="project-tagline" style="text-align:left;">· 빙고 게임과 모래 시뮬레이션을 결합한 싱글플레이 퍼즐 게임</p>
-          <p class="project-tagline" style="text-align:left;">· 플레이어의 모래 투하 분포를 계산하여 대응하는 봇 구현</p>
-          <p class="project-tagline" style="text-align:left;">· 현재 핵심 게임플레이 구현 완료 및 추가 컨텐츠 기획 중</p>
+          <ul class="project-features">
+            <li>빙고 게임과 모래 시뮬레이션을 결합한 싱글플레이 퍼즐 게임</li>
+            <li>플레이어의 모래 투하 분포를 계산하여 대응하는 봇 구현</li>
+            <li>현재 핵심 게임플레이 구현 완료 + 추가 컨텐츠 기획 중</li>
+          </ul>
         </div>
 
         <details class="card-section">
@@ -527,7 +583,7 @@
           </div>
         </details>
 
-        <details class="card-section">
+        <details class="card-section" open>
           <summary>주요 구현 사항</summary>
           <div class="card-section-body">
             <div class="func-list">
@@ -672,12 +728,14 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
         </div>
 
         <div style="margin-top:18px; margin-bottom:14px;">
-          <p class="project-tagline" style="text-align:left;">· TEMP</p>
-          <p class="project-tagline" style="text-align:left;">· TEMP</p>
-          <p class="project-tagline" style="text-align:left;">· TEMP</p>
+          <ul class="project-features">
+            <li>TEMP</li>
+            <li>TEMP</li>
+            <li>TEMP</li>
+          </ul>
         </div>
 
-        <details class="card-section">
+        <details class="card-section" open>
           <summary>주요 구현 사항</summary>
           <div class="card-section-body">
             <div class="func-list">
@@ -710,12 +768,14 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
         <img src="./assets/c3_flightshooter1.jpg" alt="Flight Shooter 스크린샷" style="width:80%; border-radius:4px; border:1px solid var(--border); display:block; margin:14px auto 0;">
 
         <div style="margin-top:18px; margin-bottom:14px;">
-          <p class="project-tagline" style="text-align:left;">· TEMP</p>
-          <p class="project-tagline" style="text-align:left;">· TEMP</p>
-          <p class="project-tagline" style="text-align:left;">· TEMP</p>
+          <ul class="project-features">
+            <li>TEMP</li>
+            <li>TEMP</li>
+            <li>TEMP</li>
+          </ul>
         </div>
 
-        <details class="card-section">
+        <details class="card-section" open>
           <summary>주요 구현 사항</summary>
           <div class="card-section-body">
             <div class="func-list">
@@ -740,41 +800,86 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
       <h2>기타 프로젝트</h2>
 
       <div class="project-card" id="other1">
-        <h3>기타 프로젝트 A</h3>
+        <h3>HoYoLab-box</h3>
         <div class="tag-row">
-          <span class="tag">태그</span>
+          <span class="tag">Python</span>
+          <span class="tag">GitHub Actions</span>
+          <span class="tag">웹 API</span>
+          <span class="tag">토이 프로젝트</span>
+          <span class="tag">2023.12</span>
         </div>
-        <p>내용을 여기에 작성하세요.</p>
+        <img src="./assets/c4_hb1.png" alt="HoYoLab-box" style="width:40%; border-radius:4px; border:1px solid var(--border); display:block; margin:14px auto 0;">
+        <div style="margin-top:18px; margin-bottom:14px;">
+          <ul class="project-features">
+            <li>TEMP</li>
+            <li>TEMP</li>
+            <li>TEMP</li>
+          </ul>
+        </div>
         <div class="project-links">
-          <a href="#" target="_blank">🔗 GitHub 저장소 →</a>
+          <a href="https://github.com/yangchang-n/HoYoLab-box" target="_blank">🔗 GitHub 저장소 →</a>
         </div>
       </div>
 
       <div class="project-card" id="other2">
-        <h3>기타 프로젝트 B</h3>
+        <h3>아이유 TTS 제작</h3>
         <div class="tag-row">
-          <span class="tag">태그</span>
+          <span class="tag">Python</span>
+          <span class="tag">TTS</span>
+          <span class="tag">Fine-tuning</span>
+          <span class="tag">데이터셋 제작</span>
+          <span class="tag">모델 전이학습</span>
+          <span class="tag">2022.08 – 2022.10</span>
         </div>
-        <p>내용을 여기에 작성하세요.</p>
+        <img src="./assets/c5_iutts1.png" alt="아이유 TTS 제작" style="width:60%; border-radius:4px; border:1px solid var(--border); display:block; margin:14px auto 0;">
+        <div style="margin-top:18px; margin-bottom:14px;">
+          <ul class="project-features">
+            <li>TEMP</li>
+            <li>TEMP</li>
+            <li>TEMP</li>
+          </ul>
+        </div>
         <div class="project-links">
-          <a href="#" target="_blank">🔗 GitHub 저장소 →</a>
+          <a href="#" onclick="openPdf('./assets/c5_iutts_slides.pdf','아이유 TTS 제작 — 발표 자료');return false;">📄 발표 자료 (PDF) →</a>
         </div>
       </div>
 
       <div class="project-card" id="other3">
-        <h3>기타 프로젝트 C</h3>
+        <h3>For Life Photos</h3>
         <div class="tag-row">
-          <span class="tag">태그</span>
+          <span class="tag">Python</span>
+          <span class="tag">팀 5인</span>
+          <span class="tag">TensorFlow</span>
+          <span class="tag">Google MediaPipe</span>
+          <span class="tag">Streamlit</span>
+          <span class="tag">2022.08</span>
         </div>
-        <p>내용을 여기에 작성하세요.</p>
+        <div style="position:relative; width:80%; margin:14px auto 0; padding-bottom:calc(80% * 9/16);">
+          <iframe style="position:absolute; top:0; left:0; width:100%; height:100%; border:none; border-radius:4px;"
+            src="https://www.youtube.com/embed/gJTN2_X1sFU" allowfullscreen></iframe>
+        </div>
+        <div style="margin-top:18px; margin-bottom:14px;">
+          <ul class="project-features">
+            <li>TEMP</li>
+            <li>TEMP</li>
+            <li>TEMP</li>
+          </ul>
+        </div>
+        <details class="card-section" open>
+          <summary>모델 및 웹 구조</summary>
+          <div class="card-section-body">
+            <img class="diagram-img" src="./assets/c6_flp_diagram.png" alt="For Life Photos 모델 및 웹 구조 다이어그램">
+          </div>
+        </details>
         <div class="project-links">
-          <a href="#" target="_blank">🔗 GitHub 저장소 →</a>
+          <a href="https://github.com/yangchang-n/YYJG-streamlit" target="_blank">🔗 GitHub 저장소 →</a>
+          <a href="#" onclick="openPdf('./assets/c6_flp_slides.pdf','For Life Photos — 발표 자료');return false;">📄 발표 자료 (PDF) →</a>
         </div>
       </div>
     </section>
 
     <section id="trn-act">
-      <details class="main-section">
+      <details class="main-section" open>
         <summary><h2>교육 및 활동</h2></summary>
         <div class="timeline">
           <div class="timeline-item">
@@ -800,7 +905,7 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
     </section>
 
     <section id="edu-cert">
-      <details class="main-section">
+      <details class="main-section" open>
         <summary><h2>학력 및 자격증</h2></summary>
         <div class="timeline">
           <div class="timeline-item">
@@ -831,7 +936,34 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
 
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
+  // 이메일 우회 (Cloudflare 인코딩 방지)
+  (function() {
+    const u = 'tomtomato';
+    const d = 'naver.com';
+    const el = document.getElementById('contact-email');
+    el.href = 'mailto:' + u + '@' + d;
+    el.textContent = u + '@' + d;
+  })();
+
+  // PDF 모달
+  function openPdf(src, title) {
+    document.getElementById('pdf-iframe').src = src;
+    document.getElementById('pdf-modal-title').textContent = title;
+    document.getElementById('pdf-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  document.getElementById('pdf-modal-close').addEventListener('click', () => {
+    document.getElementById('pdf-modal').classList.remove('open');
+    document.getElementById('pdf-iframe').src = '';
+    document.body.style.overflow = '';
+  });
+  document.getElementById('pdf-modal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('pdf-modal')) {
+      document.getElementById('pdf-modal-close').click();
+    }
+  });
+
   // 스크롤 진행 바
   const bar = document.getElementById('scroll-bar');
   window.addEventListener('scroll', () => {
