@@ -109,6 +109,9 @@
       font-size: 12px;
       color: var(--text-muted);
     }
+    .toc-sidebar ul li.toc-gap {
+      margin-top: 10px;
+    }
 
     /* ── 본문 ── */
     main {
@@ -118,7 +121,7 @@
       min-height: 100vh;
     }
 
-    section { margin-bottom: 64px; }
+    section { margin-bottom: 80px; }
 
     section h2 {
       font-family: 'Noto Serif KR', serif;
@@ -217,7 +220,7 @@
       font-size: 15px;
       font-weight: 300;
       color: var(--text-sub);
-      margin-bottom: 2px;
+      margin-bottom: 6px;
       padding-left: 1em;
       text-indent: -1em;
     }
@@ -354,7 +357,7 @@
     }
     .project-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,.07); }
     .project-card h3 { margin-top: 0; }
-    .tag-row { display: flex; flex-wrap: wrap; gap: 7px; margin: 10px 0 14px; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 7px; margin: 10px 0 20px; }
     .tag {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
@@ -503,10 +506,12 @@
 
 <div class="page-wrapper">
 
+<div id="scroll-bar"></div>
+
   <header>
     <h1>양창은 | 게임 개발 포트폴리오</h1>
     <div class="contact-row">
-      <a id="contact-email" href="#">tomtomato@naver.com</a>
+      <a id="contact-email" href="#"><span class="__cf_email__" data-cfemail="5a2e35372e35373b2e351a343b2c3f2874393537">[email&#160;protected]</span></a>
       <span class="sep">|</span>
       <a href="https://github.com/yangchang-n" target="_blank">github.com/yangchang-n</a>
     </div>
@@ -520,11 +525,11 @@
       <li class="sub"><a href="#proj1">— Sand Bingo</a></li>
       <li class="sub"><a href="#proj2">— Sisyphus</a></li>
       <li class="sub"><a href="#proj3">— Flight Shooter</a></li>
-      <li><a href="#other-projects">기타 프로젝트</a></li>
+      <li><a href="#other-projects" class="toc-gap" style="margin-top:10px; display:block; padding-top:10px;">기타 프로젝트</a></li>
       <li class="sub"><a href="#other1">— HoYoLab-box</a></li>
       <li class="sub"><a href="#other2">— 아이유 TTS 제작</a></li>
       <li class="sub"><a href="#other3">— For Life Photos</a></li>
-      <li><a href="#trn-act">교육 및 활동</a></li>
+      <li><a href="#trn-act" style="margin-top:10px; display:block; padding-top:10px;">교육 및 활동</a></li>
       <li><a href="#edu-cert">학력 및 자격증</a></li>
     </ul>
   </aside>
@@ -840,7 +845,7 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
           </ul>
         </div>
         <div class="project-links">
-          <a href="#" onclick="openPdf('./assets/c5_iutts_slides.pdf','아이유 TTS 제작 — 발표 자료');return false;">📄 발표 자료 (PDF) →</a>
+          <a href="javascript:void(0)" onclick="openPdf('./assets/c5_iutts_slides.pdf','아이유 TTS 제작 — 발표 자료');">📄 발표 자료 (PDF) →</a>
         </div>
       </div>
 
@@ -873,7 +878,7 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
         </details>
         <div class="project-links">
           <a href="https://github.com/yangchang-n/YYJG-streamlit" target="_blank">🔗 GitHub 저장소 →</a>
-          <a href="#" onclick="openPdf('./assets/c6_flp_slides.pdf','For Life Photos — 발표 자료');return false;">📄 발표 자료 (PDF) →</a>
+          <a href="javascript:void(0)" onclick="openPdf('./assets/c6_flp_slides.pdf','For Life Photos — 발표 자료');">📄 발표 자료 (PDF) →</a>
         </div>
       </div>
     </section>
@@ -937,34 +942,59 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
 </div>
 
 <script>
-  // 이메일 우회 (Cloudflare 인코딩 방지)
-  (function() {
+  document.addEventListener('DOMContentLoaded', function() {
+
+    // 이메일 우회
     const u = 'tomtomato';
     const d = 'naver.com';
     const el = document.getElementById('contact-email');
-    el.href = 'mailto:' + u + '@' + d;
-    el.textContent = u + '@' + d;
-  })();
+    if (el) { el.href = 'mailto:' + u + '@' + d; el.textContent = u + '@' + d; }
 
-  // PDF 모달
-  function openPdf(src, title) {
-    document.getElementById('pdf-iframe').src = src;
-    document.getElementById('pdf-modal-title').textContent = title;
-    document.getElementById('pdf-modal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  document.getElementById('pdf-modal-close').addEventListener('click', () => {
-    document.getElementById('pdf-modal').classList.remove('open');
-    document.getElementById('pdf-iframe').src = '';
-    document.body.style.overflow = '';
-  });
-  document.getElementById('pdf-modal').addEventListener('click', (e) => {
-    if (e.target === document.getElementById('pdf-modal')) {
-      document.getElementById('pdf-modal-close').click();
+    // PDF 모달
+    window.openPdf = function(src, title) {
+      document.getElementById('pdf-iframe').src = src;
+      document.getElementById('pdf-modal-title').textContent = title;
+      document.getElementById('pdf-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    };
+    document.getElementById('pdf-modal-close').addEventListener('click', () => {
+      document.getElementById('pdf-modal').classList.remove('open');
+      document.getElementById('pdf-iframe').src = '';
+      document.body.style.overflow = '';
+    });
+    document.getElementById('pdf-modal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('pdf-modal')) {
+        document.getElementById('pdf-modal-close').click();
+      }
+    });
+
+    // 스크롤 진행 바
+    const bar = document.getElementById('scroll-bar');
+    window.addEventListener('scroll', () => {
+      const total = document.body.scrollHeight - window.innerHeight;
+      bar.style.width = (window.scrollY / total * 100) + '%';
+    });
+
+    // TOC 활성화 - 스크롤 위치 기준
+    const sections = document.querySelectorAll('section[id], .project-card[id]');
+    const tocLinks = document.querySelectorAll('.toc-sidebar a');
+
+    function updateToc() {
+      let current = '';
+      sections.forEach(sec => {
+        if (window.scrollY >= sec.offsetTop - 120) {
+          current = sec.id;
+        }
+      });
+      tocLinks.forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+      });
     }
-  });
+    window.addEventListener('scroll', updateToc);
+    updateToc();
 
-  // 스크롤 진행 바
-  const bar = document.getElementById('scroll-bar');
-  window.addEventListener('scroll', () => {
-    const total = document.body.scrollHeight
+  });
+</script>
+</body>
+</html>
