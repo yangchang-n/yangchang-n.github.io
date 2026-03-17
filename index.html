@@ -357,7 +357,7 @@
     }
     .project-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,.07); }
     .project-card h3 { margin-top: 0; }
-    .tag-row { display: flex; flex-wrap: wrap; gap: 7px; margin: 10px 0 20px; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 7px; margin: 10px 0 28px; }
     .tag {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
@@ -527,7 +527,7 @@
       <li class="sub"><a href="#proj3">— Flight Shooter</a></li>
       <li><a href="#other-projects" class="toc-gap" style="margin-top:10px; display:block; padding-top:10px;">기타 프로젝트</a></li>
       <li class="sub"><a href="#other1">— HoYoLab-box</a></li>
-      <li class="sub"><a href="#other2">— 아이유 TTS 제작</a></li>
+      <li class="sub"><a href="#other2">— 아이유 TTS 파인튜닝</a></li>
       <li class="sub"><a href="#other3">— For Life Photos</a></li>
       <li><a href="#trn-act" style="margin-top:10px; display:block; padding-top:10px;">교육 및 활동</a></li>
       <li><a href="#edu-cert">학력 및 자격증</a></li>
@@ -552,10 +552,10 @@
         </div>
 
         <div class="project-logo-wrap">
-          <img src="./assets/c1_sandbingo_logo.png" alt="Sand Bingo 로고" style="width:40%;">
+          <img src="./assets/c1_sandbingo_logo.png" alt="Sand Bingo 로고" style="width:30%;">
         </div>
 
-        <div style="position:relative; width:60%; margin:10px auto 0;">
+        <div style="position:relative; width:60%; margin:10px auto 20px;">
           <video class="project-video" src="./assets/c1_sandbingo_mp4.mp4"
             autoplay loop muted playsinline style="width:100%; margin:0;"></video>
           <span style="position:absolute; bottom:8px; right:10px; font-family:'JetBrains Mono',monospace; font-size:11px; color:rgba(255,255,255,0.85); background:rgba(0,0,0,0.45); padding:2px 7px; border-radius:3px; pointer-events:none;">▶ MP4</span>
@@ -727,7 +727,7 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
           <span class="tag">2026.01</span>
         </div>
 
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:14px; margin-bottom:20px;">
           <img src="./assets/c2_sisyphus1.jpg" alt="Sisyphus 스크린샷 1" style="width:100%; border-radius:4px; border:1px solid var(--border); display:block;">
           <img src="./assets/c2_sisyphus2.jpg" alt="Sisyphus 스크린샷 2" style="width:100%; border-radius:4px; border:1px solid var(--border); display:block;">
         </div>
@@ -770,7 +770,7 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
           <span class="tag">2025.12</span>
         </div>
 
-        <img src="./assets/c3_flightshooter1.jpg" alt="Flight Shooter 스크린샷" style="width:80%; border-radius:4px; border:1px solid var(--border); display:block; margin:14px auto 0;">
+        <img src="./assets/c3_flightshooter1.jpg" alt="Flight Shooter 스크린샷" style="width:80%; border-radius:4px; border:1px solid var(--border); display:block; margin:14px auto 20px;">
 
         <div style="margin-top:18px; margin-bottom:14px;">
           <ul class="project-features">
@@ -813,7 +813,7 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
           <span class="tag">토이 프로젝트</span>
           <span class="tag">2023.12</span>
         </div>
-        <img src="./assets/c4_hb1.png" alt="HoYoLab-box" style="width:40%; border-radius:4px; border:1px solid var(--border); display:block; margin:14px auto 0;">
+        <img src="./assets/c4_hb1.png" alt="HoYoLab-box" style="width:50%; border-radius:4px; border:1px solid var(--border); display:block; margin:14px auto 20px;">
         <div style="margin-top:18px; margin-bottom:14px;">
           <ul class="project-features">
             <li>TEMP</li>
@@ -827,7 +827,7 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
       </div>
 
       <div class="project-card" id="other2">
-        <h3>아이유 TTS 제작</h3>
+        <h3>아이유 TTS 파인튜닝</h3>
         <div class="tag-row">
           <span class="tag">Python</span>
           <span class="tag">TTS</span>
@@ -836,7 +836,7 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
           <span class="tag">모델 전이학습</span>
           <span class="tag">2022.08 – 2022.10</span>
         </div>
-        <img src="./assets/c5_iutts1.png" alt="아이유 TTS 제작" style="width:60%; border-radius:4px; border:1px solid var(--border); display:block; margin:14px auto 0;">
+        <img src="./assets/c5_iutts1.png" alt="아이유 TTS 파인튜닝" style="width:50%; border-radius:4px; border:1px solid var(--border); display:block; margin:14px auto 20px;">
         <div style="margin-top:18px; margin-bottom:14px;">
           <ul class="project-features">
             <li>TEMP</li>
@@ -845,7 +845,7 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
           </ul>
         </div>
         <div class="project-links">
-          <a href="javascript:void(0)" onclick="openPdf('./assets/c5_iutts_slides.pdf','아이유 TTS 제작 — 발표 자료');">📄 발표 자료 (PDF) →</a>
+          <a href="javascript:void(0)" onclick="openPdf('./assets/c5_iutts_slides.pdf','아이유 TTS 파인튜닝 — 발표 자료');">📄 발표 자료 (PDF) →</a>
         </div>
       </div>
 
@@ -859,7 +859,7 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
           <span class="tag">Streamlit</span>
           <span class="tag">2022.08</span>
         </div>
-        <div style="position:relative; width:80%; margin:14px auto 0; padding-bottom:calc(80% * 9/16);">
+        <div style="position:relative; width:80%; margin:14px auto 20px; padding-bottom:calc(80% * 9/16);">
           <iframe style="position:absolute; top:0; left:0; width:100%; height:100%; border:none; border-radius:4px;"
             src="https://www.youtube.com/embed/gJTN2_X1sFU" allowfullscreen></iframe>
         </div>
