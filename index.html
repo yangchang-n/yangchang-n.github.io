@@ -407,9 +407,6 @@
     }
     .tl-title { font-weight: 500; color: var(--accent); margin-bottom: 3px; }
 
-    /* ── 오른쪽 ── */
-    .right-aside {}
-
     /* ── 푸터 ── */
     footer {
       grid-column: 1 / -1;
@@ -564,8 +561,8 @@
         <div style="margin-top:26px; margin-bottom:14px;">
           <ul class="project-features">
             <li>빙고 게임과 모래 시뮬레이션을 결합한 싱글플레이 퍼즐 게임</li>
-            <li>플레이어의 모래 투하 분포를 계산하여 대응하는 봇 구현</li>
-            <li>현재 핵심 게임플레이 구현 완료 + 추가 컨텐츠 기획 중</li>
+            <li>플레이어의 모래 투하 분포를 계산하여 대응하는 봇 개발</li>
+            <li>현재 핵심 게임플레이 구현 완료 + 추가 콘텐츠 기획 중</li>
           </ul>
         </div>
 
@@ -628,8 +625,8 @@ bool UpdateSand(int x, int y)
     { /* 반대 대각 */ ... return true; }
     return false;
 }</pre>
-                  <p class="func-desc">· 픽셀 단위 셀룰러 오토마타*로 모래 물리를 구현. 매 행마다 스캔 방향을 무작위로 반전시켜 좌우 편향 없는 자연스러운 낙하를 구현함</p>
-                  <p class="func-desc" style="padding-left:12px; font-size:12.5px; color:var(--text-muted);">* 각 모래 입자가 매 시뮬레이션 스텝마다 아래, 좌하, 우하 순서로 이동 가능 여부를 판단해 자연스러운 낙하와 모래 누적을 구현</p>
+                  <p class="func-desc">· 픽셀 단위 셀룰러 오토마타*로 모래 물리를 구현. 매 행마다 스캔 방향을 무작위로 반전시켜 좌우 편향 없는 자연스러운 낙하를 연출함</p>
+                  <p class="func-desc" style="padding-left:12px; font-size:12.5px; color:var(--text-muted);">* 각 모래 입자가 매 시뮬레이션 스텝마다 아래, 좌하, 우하 순서로 이동 가능 여부를 판단해 자연스러운 낙하와 모래 누적을 표현</p>
                   <p class="func-desc">· 변경이 발생한 픽셀/셀만 dirty set에 등록해 해당 프레임에 변경된 영역만을 렌더링하여 연산을 최적화함</p>
                 </div>
               </details>
@@ -856,7 +853,7 @@ private void SetFadeAlpha(float alpha)
 
         <div style="margin-top:26px; margin-bottom:14px;">
           <ul class="project-features">
-            <li>적 비행기의 공격을 회피하며 격추하는 탑다운 슈팅 게임</li>
+            <li>적 비행기의 공격을 회피하며 격추하는 간단한 탑다운 슈팅 게임</li>
             <li>직선으로 나가는 총알과 적을 탐색해 유도되는 미사일을 별도로 구현</li>
           </ul>
         </div>
@@ -972,7 +969,7 @@ void Update()
         <img src="./assets/c4_hb1.png" alt="HoYoLab-box" style="width:50%; border-radius:4px; border:1px solid var(--border); display:block; margin:14px auto 20px;">
         <div style="margin-top:26px; margin-bottom:14px;">
           <ul class="project-features">
-            <li>GitHub Actions로 일정 주기마다 게임 활동 스탯을 Gist에 업데이트</li>
+            <li>GitHub Actions로 일정 주기마다 게임 활동 스탯을 Gist에 업데이트하는 기능 구현</li>
             <li>HoYoverse의 커뮤니티 플랫폼 HoYoLab의 프로필 데이터 API와 연동</li>
             <li>26년 3월 기준 레포지토리 Star 12개, Fork 5개 달성</li>
           </ul>
@@ -994,7 +991,7 @@ void Update()
         <img src="./assets/c5_iutts1.png" alt="아이유 TTS 파인튜닝" style="width:50%; border-radius:4px; border:1px solid var(--border); display:block; margin:14px auto 20px;">
         <div style="margin-top:26px; margin-bottom:14px;">
           <ul class="project-features">
-            <li>기존 한국어 TTS 모델에 직접 제작한 아이유 음성 데이터셋으로 파인튜닝하여 개인화된 TTS를 구현</li>
+            <li>기존 한국어 TTS 모델에 직접 제작한 아이유 음성 데이터셋으로 파인튜닝하여 개인화된 TTS를 제작</li>
             <li>노이즈 제거·문장 분리·발음 표기까지 데이터셋을 직접 제작 (181개 파일, 총 11분 25초 분량)</li>
             <li>표준 발음법을 참조하여 모든 음성 파일에 스크립트 라벨링</li>
           </ul>
@@ -1024,12 +1021,6 @@ void Update()
             <li>팀장 및 PM 역할 병행, 5명의 팀 프로젝트 중 기여도 35%</li>
           </ul>
         </div>
-        <details class="card-section" open>
-          <summary>모델 및 웹 구조</summary>
-          <div class="card-section-body">
-            <img class="diagram-img" src="./assets/c6_flp_diagram.png" alt="For Life Photos 모델 및 웹 구조 다이어그램">
-          </div>
-        </details>
         <div class="project-links">
           <a href="https://github.com/yangchang-n/YYJG-streamlit" target="_blank">🔗 GitHub 저장소 →</a>
           <a href="javascript:void(0)" onclick="openPdf('./assets/c6_flp_slides.pdf','For Life Photos — 발표 자료');">📄 발표 자료 (PDF) →</a>
