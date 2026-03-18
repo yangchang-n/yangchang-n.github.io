@@ -732,7 +732,7 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
           <img src="./assets/c2_sisyphus2.jpg" alt="Sisyphus 스크린샷 2" style="width:100%; border-radius:4px; border:1px solid var(--border); display:block;">
         </div>
 
-        <div style="margin-top:18px; margin-bottom:14px;">
+        <div style="margin-top:26px; margin-bottom:14px;">
           <ul class="project-features">
             <li>크림 게임즈의 〈The Game of Sisyphus〉를 모작한 항아리류 게임</li>
             <li>회전 망치, 굴러오는 돌, 낙빙으로 난이도를 높여가며 3단계 스테이지로 구성</li>
@@ -854,7 +854,7 @@ private void SetFadeAlpha(float alpha)
 
         <img src="./assets/c3_flightshooter1.jpg" alt="Flight Shooter 스크린샷" style="width:80%; border-radius:4px; border:1px solid var(--border); display:block; margin:14px auto 20px;">
 
-        <div style="margin-top:18px; margin-bottom:14px;">
+        <div style="margin-top:26px; margin-bottom:14px;">
           <ul class="project-features">
             <li>적 비행기의 공격을 회피하며 격추하는 탑다운 슈팅 게임</li>
             <li>직선으로 나가는 총알과 적을 탐색해 유도되는 미사일을 별도로 구현</li>
@@ -899,7 +899,6 @@ private void SetFadeAlpha(float alpha)
     pushForce.Normalize();
     playerRb.AddForce(pushForce * 15);
 }</pre>
-                  <p class="func-desc">· 총알 쿨타임과 미사일 쿨타임을 독립적으로 관리해 일반 총알과 미사일을 서로 다른 연사 속도로 운용함</p>
                   <p class="func-desc">· 미사일 발사 시 동일 위치에서 두 인스턴스를 생성하고 하나의 <code>leftSide</code> 값만 변경해 최소한의 코드로 좌우 분기 발사를 구현함</p>
                   <p class="func-desc">· 입력 벡터를 정규화 후 <code>AddForce</code>로 적용해 대각선 이동 시에도 속도가 일정하게 유지됨</p>
                 </div>
@@ -971,11 +970,11 @@ void Update()
           <span class="tag">2023.12</span>
         </div>
         <img src="./assets/c4_hb1.png" alt="HoYoLab-box" style="width:50%; border-radius:4px; border:1px solid var(--border); display:block; margin:14px auto 20px;">
-        <div style="margin-top:18px; margin-bottom:14px;">
+        <div style="margin-top:26px; margin-bottom:14px;">
           <ul class="project-features">
-            <li>TEMP</li>
-            <li>TEMP</li>
-            <li>TEMP</li>
+            <li>GitHub Actions로 일정 주기마다 게임 활동 스탯을 Gist에 업데이트</li>
+            <li>HoYoverse의 커뮤니티 플랫폼 HoYoLab의 프로필 데이터 API와 연동</li>
+            <li>26년 3월 기준 레포지토리 Star 12개, Fork 5개 달성</li>
           </ul>
         </div>
         <div class="project-links">
@@ -988,17 +987,16 @@ void Update()
         <div class="tag-row">
           <span class="tag">Python</span>
           <span class="tag">TTS</span>
-          <span class="tag">Fine-tuning</span>
           <span class="tag">데이터셋 제작</span>
           <span class="tag">모델 전이학습</span>
           <span class="tag">2022.08 – 2022.10</span>
         </div>
         <img src="./assets/c5_iutts1.png" alt="아이유 TTS 파인튜닝" style="width:50%; border-radius:4px; border:1px solid var(--border); display:block; margin:14px auto 20px;">
-        <div style="margin-top:18px; margin-bottom:14px;">
+        <div style="margin-top:26px; margin-bottom:14px;">
           <ul class="project-features">
-            <li>TEMP</li>
-            <li>TEMP</li>
-            <li>TEMP</li>
+            <li>기존 한국어 TTS 모델에 직접 제작한 아이유 음성 데이터셋으로 파인튜닝하여 개인화된 TTS를 구현</li>
+            <li>노이즈 제거·문장 분리·발음 표기까지 데이터셋을 직접 제작 (181개 파일, 총 11분 25초 분량)</li>
+            <li>표준 발음법을 참조하여 모든 음성 파일에 스크립트 라벨링</li>
           </ul>
         </div>
         <div class="project-links">
@@ -1010,21 +1008,20 @@ void Update()
         <h3>For Life Photos</h3>
         <div class="tag-row">
           <span class="tag">Python</span>
-          <span class="tag">팀 5인</span>
-          <span class="tag">TensorFlow</span>
-          <span class="tag">Google MediaPipe</span>
           <span class="tag">Streamlit</span>
+          <span class="tag">AI 모델 통합</span>
+          <span class="tag">팀 5인</span>
           <span class="tag">2022.08</span>
         </div>
         <div style="position:relative; width:80%; margin:14px auto 20px; padding-bottom:calc(80% * 9/16);">
           <iframe style="position:absolute; top:0; left:0; width:100%; height:100%; border:none; border-radius:4px;"
             src="https://www.youtube.com/embed/gJTN2_X1sFU" allowfullscreen></iframe>
         </div>
-        <div style="margin-top:18px; margin-bottom:14px;">
+        <div style="margin-top:26px; margin-bottom:14px;">
           <ul class="project-features">
-            <li>TEMP</li>
-            <li>TEMP</li>
-            <li>TEMP</li>
+            <li>사진의 구도·수평·포즈를 AI로 분석해 최적의 인생샷을 자동으로 선별하는 웹 서비스</li>
+            <li>팀원들이 학습한 3개의 모델 연결·통합 및 Streamlit 기반 웹 서비스 구현 담당</li>
+            <li>팀장 및 PM 역할 병행, 5명의 팀 프로젝트 중 기여도 35%</li>
           </ul>
         </div>
         <details class="card-section" open>
@@ -1054,7 +1051,7 @@ void Update()
             <p class="period">2023. 05 – 2023. 11</p>
             <p class="tl-title">Project Astro-Warp CBT</p>
             <p>HoYoverse</p>
-            <p>서브컬쳐 턴제 RPG 〈붕괴: 스타레일〉 비공개 베타테스트 심층 그룹 참여 (v1.2 – v1.5)</p>
+            <p>서브컬처 턴제 RPG 〈붕괴: 스타레일〉 비공개 베타테스트 심층 그룹 참여 (v1.2 – v1.5)</p>
           </div>
           <div class="timeline-item">
             <p class="period">2022. 04 – 2022. 10</p>
