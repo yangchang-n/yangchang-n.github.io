@@ -657,7 +657,7 @@ IEnumerator WaitForSandSettlement()
         else settlementTimer += Time.deltaTime;
         yield return null;
     }
-    // 점수 계산 → 셀 제거 → 재귀 호출 또는 플레이어 전환
+    // 점수 계산 -> 셀 제거 -> 함수 재귀 호출 or 플레이어 턴 전환
     ScoreResult result = sandSimulator.CalculateScoreAndGetCells();
     if (result.cellsToRemove.Count > 0)
     {
@@ -735,7 +735,7 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
         <div style="margin-top:18px; margin-bottom:14px;">
           <ul class="project-features">
             <li>크림 게임즈의 〈The Game of Sisyphus〉를 모작한 항아리류 게임</li>
-            <li>회전 망치, 굴러오는 돌, 낙빙으로 난이도를 늘려가며 3단계 스테이지를 구성</li>
+            <li>회전 망치, 굴러오는 돌, 낙빙으로 난이도를 높여가며 3단계 스테이지로 구성</li>
           </ul>
         </div>
 
@@ -746,43 +746,43 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
               <details class="func-item">
                 <summary>PlayerController</summary>
                 <div class="func-body">
-                  <pre class="code-box">// 마우스 입력 누적값으로 카메라와 캐릭터 회전 동기화
-mouseX += Input.GetAxis("Mouse X");
-mouseY -= Input.GetAxis("Mouse Y");
-bodyPos.transform.rotation = Quaternion.Euler(mouseY * camRotSpeed, mouseX * camRotSpeed, 0);
-cam.transform.rotation   = Quaternion.Euler(mouseY * camRotSpeed, mouseX * camRotSpeed, 0);
-cam.transform.position   = camPos.position;
-transform.rotation       = Quaternion.Euler(0, mouseX * camRotSpeed, 0);
-
-// 하한선 또는 경사 기준선 밑으로 떨어질 시 리스폰
-float playerY = transform.position.y;
-float playerZ = transform.position.z;
-if (playerY &lt; -20)
+                  <pre class="code-box">void Update()
 {
-    transform.position = GameManager.instance.playerRespawnPoint;
-    rigid.velocity = Vector3.zero;
-}
-else if (playerY &lt; playerZ * tanY_Z - 25)
-{
-    Vector3 respawnPoint = new Vector3(0, playerY + 30, playerZ - 5);
-    transform.position = respawnPoint;
-    rigid.velocity = Vector3.zero;
-}
-
-if (isMoving)
-{
-    moveVector = transform.TransformDirection(moveVector);
-    moveVector.Normalize();
-    rigid.AddForce(moveVector * moveConstant);
-}
-
-if (Input.GetKeyDown(KeyCode.Space) &amp;&amp; jumpElapsedTime &gt; 1)
-{
-    rigid.AddForce(Vector3.up * jumpConstant, ForceMode.Impulse);
-    jumpElapsedTime = 0;
-}
-rigid.AddForce(Vector3.down * dragDownConstant);</pre>
-                  <p class="func-desc">· 마우스 누적값을 <code>Quaternion.Euler</code>에 직접 대입해 bodyPos, 카메라, 플레이어 오브젝트 세 축의 회전을 단일 Update 흐름 안에서 동기화함</p>
+    // 카메라와 캐릭터 회전 동기화
+    mouseX += Input.GetAxis("Mouse X");
+    mouseY -= Input.GetAxis("Mouse Y");
+    bodyPos.transform.rotation = Quaternion.Euler(mouseY * camRotSpeed, mouseX * camRotSpeed, 0);
+    cam.transform.rotation   = Quaternion.Euler(mouseY * camRotSpeed, mouseX * camRotSpeed, 0);
+    cam.transform.position   = camPos.position;
+    transform.rotation       = Quaternion.Euler(0, mouseX * camRotSpeed, 0);
+    // 하한선 또는 경사 기준선 밑으로 떨어질 시 리스폰
+    float playerY = transform.position.y;
+    float playerZ = transform.position.z;
+    if (playerY &lt; -20)
+    {
+        transform.position = GameManager.instance.playerRespawnPoint;
+        rigid.velocity = Vector3.zero;
+    }
+    else if (playerY &lt; playerZ * tanY_Z - 25)
+    {
+        Vector3 respawnPoint = new Vector3(0, playerY + 30, playerZ - 5);
+        transform.position = respawnPoint;
+        rigid.velocity = Vector3.zero;
+    }
+    if (isMoving)
+    {
+        moveVector = transform.TransformDirection(moveVector);
+        moveVector.Normalize();
+        rigid.AddForce(moveVector * moveConstant);
+    }
+    if (Input.GetKeyDown(KeyCode.Space) &amp;&amp; jumpElapsedTime &gt; 1)
+    {
+        rigid.AddForce(Vector3.up * jumpConstant, ForceMode.Impulse);
+        jumpElapsedTime = 0;
+    }
+    rigid.AddForce(Vector3.down * dragDownConstant);
+}</pre>
+                  <p class="func-desc">· 마우스 누적값을 <code>Quaternion.Euler</code>에 직접 대입해 카메라 기준점, 카메라, 플레이어 오브젝트 세 축의 회전을 단일 Update 흐름 안에서 동기화함</p>
                   <p class="func-desc">· 낙하 하한선 판정 외에 맵 경사각을 미리 계산한 <code>tanY_Z</code>를 이용해 경사면 이탈 여부를 판별하고 자연스러운 복귀 지점을 결정함</p>
                   <p class="func-desc">· 점프 쿨타임으로 연속 점프를 방지하고, 매 프레임 중력을 추가 적용해 충돌 등으로 플레이어가 의도치 않게 떠오르는 상황을 줄임</p>
                 </div>
@@ -799,7 +799,6 @@ public void SceneChange(string sceneName)
 {
     StartCoroutine(FadeOutAndLoad(sceneName));
 }
-
 private IEnumerator FadeIn(string sceneName)
 {
     ShowCursor(sceneName);
@@ -812,7 +811,6 @@ private IEnumerator FadeIn(string sceneName)
     }
     SetFadeAlpha(0f);
 }
-
 private IEnumerator FadeOutAndLoad(string sceneName)
 {
     float fadeElapsedTime = 0f;
@@ -825,7 +823,6 @@ private IEnumerator FadeOutAndLoad(string sceneName)
     SetFadeAlpha(1f);
     SceneManager.LoadScene(sceneName);
 }
-
 private void SetFadeAlpha(float alpha)
 {
     Color color = fadeCoverImage.color;
@@ -859,9 +856,8 @@ private void SetFadeAlpha(float alpha)
 
         <div style="margin-top:18px; margin-bottom:14px;">
           <ul class="project-features">
-            <li>TEMP</li>
-            <li>TEMP</li>
-            <li>TEMP</li>
+            <li>적 비행기의 공격을 회피하며 격추하는 탑다운 슈팅 게임</li>
+            <li>직선으로 나가는 총알과 적을 탐색해 유도되는 미사일을 별도로 구현</li>
           </ul>
         </div>
 
@@ -870,10 +866,86 @@ private void SetFadeAlpha(float alpha)
           <div class="card-section-body">
             <div class="func-list">
               <details class="func-item">
-                <summary>TEMP</summary>
+                <summary>PlayerController</summary>
                 <div class="func-body">
-                  <pre class="code-box">// 코드를 여기에 작성하세요</pre>
-                  <p class="func-desc">설명을 여기에 작성하세요.</p>
+                  <pre class="code-box">void Update()
+{
+    pushForce = new Vector2(0, 0);
+    if (bulletCooltime &lt; bulletMaxCooltime) bulletCooltime++;
+    if (missileCooltime &lt; missileMaxCooltime) missileCooltime++;
+    if (Input.GetKey(KeyCode.A)) pushForce.x = -1;
+    else if (Input.GetKey(KeyCode.D)) pushForce.x = 1;
+    if (Input.GetKey(KeyCode.W)) pushForce.y = 1;
+    else if (Input.GetKey(KeyCode.S)) pushForce.y = -1;
+    // 일반 총알 발사
+    if (Input.GetKey(KeyCode.J) &amp;&amp; bulletCooltime == bulletMaxCooltime)
+    {
+        Vector2 tempPosition = transform.position;
+        tempPosition.y += 1f;
+        Instantiate(bulletPrefab, tempPosition, Quaternion.identity);
+        audioSource.Play();
+        bulletCooltime = 0;
+    }
+    // 유도 미사일 발사
+    if (Input.GetKey(KeyCode.K) &amp;&amp; missileCooltime == missileMaxCooltime)
+    {
+        Vector2 tempPosition = transform.position;
+        GameObject m1 = Instantiate(missilePrefab, tempPosition, Quaternion.identity);
+        GameObject m2 = Instantiate(missilePrefab, tempPosition, Quaternion.identity);
+        m2.GetComponent&lt;PlayerMissileController&gt;().leftSide = false;
+        audioSource.Play();
+        missileCooltime = 0;
+    }
+    pushForce.Normalize();
+    playerRb.AddForce(pushForce * 15);
+}</pre>
+                  <p class="func-desc">· 총알 쿨타임과 미사일 쿨타임을 독립적으로 관리해 일반 총알과 미사일을 서로 다른 연사 속도로 운용함</p>
+                  <p class="func-desc">· 미사일 발사 시 동일 위치에서 두 인스턴스를 생성하고 하나의 <code>leftSide</code> 값만 변경해 최소한의 코드로 좌우 분기 발사를 구현함</p>
+                  <p class="func-desc">· 입력 벡터를 정규화 후 <code>AddForce</code>로 적용해 대각선 이동 시에도 속도가 일정하게 유지됨</p>
+                </div>
+              </details>
+              <details class="func-item">
+                <summary>PlayerMissileController</summary>
+                <div class="func-body">
+                  <pre class="code-box">void Start()
+{
+    missileRb = GetComponent&lt;Rigidbody2D&gt;();
+    enemies = GameObject.FindGameObjectsWithTag("Enemy");
+    // 초기 충격력으로 좌우 분기 궤적 시작
+    if (leftSide) missileRb.AddForce(new Vector2(-initialForce, 0));
+    else missileRb.AddForce(new Vector2(initialForce, 0));
+}
+void Update()
+{
+    // 초기 쿨타임 동안 유도를 보류해 좌우 분기 구간 확보
+    if (initialCooltime &lt; maxCooltime) { initialCooltime++; return; }
+    // 가장 가까운 적 탐색을 최초 1번만 수행
+    if (!bestFound &amp;&amp; enemies.Length &gt; 0)
+    {
+        GameObject nearest = null;
+        float bestDistance = 1000f;
+        foreach (var enemy in enemies)
+        {
+            if (enemy == null) continue;
+            float distance = (enemy.transform.position - transform.position).sqrMagnitude;
+            if (distance &lt; bestDistance)
+            {
+                bestFound = true;
+                nearest = enemy;
+                bestDistance = distance;
+            }
+        }
+        if (nearest != null)
+        {
+            moveDirection = (nearest.transform.position - transform.position).normalized;
+            float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
+        }
+    }
+    missileRb.AddForce(moveDirection * moveForce);
+}</pre>
+                  <p class="func-desc">· 발사 직후 좌우 초기 충격력을 가해 미사일이 바깥쪽으로 퍼진 뒤 적을 향하는 궤적을 물리 기반으로 연출함</p>
+                  <p class="func-desc">· 초기 쿨타임으로 분기 구간을 확보한 뒤 <code>bestFound</code> 플래그로 가장 가까운 적을 처음 1번만 탐색해 이후 방향을 고정하고, <code>sqrMagnitude</code>로 sqrt 연산을 생략해 탐색 효율을 높임</p>
                 </div>
               </details>
             </div>
