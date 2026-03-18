@@ -734,9 +734,8 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
 
         <div style="margin-top:18px; margin-bottom:14px;">
           <ul class="project-features">
-            <li>TEMP</li>
-            <li>TEMP</li>
-            <li>TEMP</li>
+            <li>크림 게임즈의 〈The Game of Sisyphus〉를 모작한 항아리류 게임</li>
+            <li>회전 망치, 굴러오는 돌, 낙빙으로 난이도를 늘려가며 3단계 스테이지를 구성</li>
           </ul>
         </div>
 
@@ -745,10 +744,96 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
           <div class="card-section-body">
             <div class="func-list">
               <details class="func-item">
-                <summary>TEMP</summary>
+                <summary>PlayerController</summary>
                 <div class="func-body">
-                  <pre class="code-box">// 코드를 여기에 작성하세요</pre>
-                  <p class="func-desc">설명을 여기에 작성하세요.</p>
+                  <pre class="code-box">// 마우스 입력 누적값으로 카메라와 캐릭터 회전 동기화
+mouseX += Input.GetAxis("Mouse X");
+mouseY -= Input.GetAxis("Mouse Y");
+bodyPos.transform.rotation = Quaternion.Euler(mouseY * camRotSpeed, mouseX * camRotSpeed, 0);
+cam.transform.rotation   = Quaternion.Euler(mouseY * camRotSpeed, mouseX * camRotSpeed, 0);
+cam.transform.position   = camPos.position;
+transform.rotation       = Quaternion.Euler(0, mouseX * camRotSpeed, 0);
+
+// 하한선 또는 경사 기준선 밑으로 떨어질 시 리스폰
+float playerY = transform.position.y;
+float playerZ = transform.position.z;
+if (playerY &lt; -20)
+{
+    transform.position = GameManager.instance.playerRespawnPoint;
+    rigid.velocity = Vector3.zero;
+}
+else if (playerY &lt; playerZ * tanY_Z - 25)
+{
+    Vector3 respawnPoint = new Vector3(0, playerY + 30, playerZ - 5);
+    transform.position = respawnPoint;
+    rigid.velocity = Vector3.zero;
+}
+
+if (isMoving)
+{
+    moveVector = transform.TransformDirection(moveVector);
+    moveVector.Normalize();
+    rigid.AddForce(moveVector * moveConstant);
+}
+
+if (Input.GetKeyDown(KeyCode.Space) &amp;&amp; jumpElapsedTime &gt; 1)
+{
+    rigid.AddForce(Vector3.up * jumpConstant, ForceMode.Impulse);
+    jumpElapsedTime = 0;
+}
+rigid.AddForce(Vector3.down * dragDownConstant);</pre>
+                  <p class="func-desc">· 마우스 누적값을 <code>Quaternion.Euler</code>에 직접 대입해 bodyPos, 카메라, 플레이어 오브젝트 세 축의 회전을 단일 Update 흐름 안에서 동기화함</p>
+                  <p class="func-desc">· 낙하 하한선 판정 외에 맵 경사각을 미리 계산한 <code>tanY_Z</code>를 이용해 경사면 이탈 여부를 판별하고 자연스러운 복귀 지점을 결정함</p>
+                  <p class="func-desc">· 점프 쿨타임으로 연속 점프를 방지하고, 매 프레임 중력을 추가 적용해 충돌 등으로 플레이어가 의도치 않게 떠오르는 상황을 줄임</p>
+                </div>
+              </details>
+              <details class="func-item">
+                <summary>SceneChanger</summary>
+                <div class="func-body">
+                  <pre class="code-box">// 씬 진입 시 페이드인, 씬 전환 시 페이드아웃 후 로드
+public void SceneOpen(string sceneName)
+{
+    StartCoroutine(FadeIn(sceneName));
+}
+public void SceneChange(string sceneName)
+{
+    StartCoroutine(FadeOutAndLoad(sceneName));
+}
+
+private IEnumerator FadeIn(string sceneName)
+{
+    ShowCursor(sceneName);
+    float fadeElapsedTime = 0f;
+    while (fadeElapsedTime &lt; fadeDuration)
+    {
+        fadeElapsedTime += Time.deltaTime;
+        SetFadeAlpha(1f - (fadeElapsedTime / fadeDuration));
+        yield return null;
+    }
+    SetFadeAlpha(0f);
+}
+
+private IEnumerator FadeOutAndLoad(string sceneName)
+{
+    float fadeElapsedTime = 0f;
+    while (fadeElapsedTime &lt; fadeDuration)
+    {
+        fadeElapsedTime += Time.deltaTime;
+        SetFadeAlpha(fadeElapsedTime / fadeDuration);
+        yield return null;
+    }
+    SetFadeAlpha(1f);
+    SceneManager.LoadScene(sceneName);
+}
+
+private void SetFadeAlpha(float alpha)
+{
+    Color color = fadeCoverImage.color;
+    color.a = alpha;
+    fadeCoverImage.color = color;
+}</pre>
+                  <p class="func-desc">· 씬 전환을 코루틴으로 처리해 페이드 애니메이션이 끝난 뒤에 씬이 로드되도록 했으며, 알파값을 경과 시간 비율로 계산해 프레임레이트와 무관하게 전환 시간을 일정하게 유지함</p>
+                  <p class="func-desc">· <code>SetFadeAlpha</code>를 단일 메서드로 분리해 페이드인·아웃 양쪽에서 재사용하고 유지 보수를 쉽게 함</p>
                 </div>
               </details>
             </div>
