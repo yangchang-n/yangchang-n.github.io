@@ -278,7 +278,7 @@
       color: var(--highlight);
       transition: transform .2s;
     }
-    details.card-section[open] summary::before { transform: rotate(90deg); }
+    details.card-section[open] > summary::before { transform: rotate(90deg); }
     details.card-section summary:hover { color: var(--highlight); }
     .card-section-body { padding-bottom: 8px; }
 
@@ -997,7 +997,7 @@ void Update()
           </ul>
         </div>
         <div class="project-links">
-          <a href="javascript:void(0)" onclick="openPdf('./assets/c5_iutts_slides.pdf','아이유 TTS 파인튜닝 — 발표 자료');">📄 발표 자료 (PDF) →</a>
+          <a href="javascript:void(0)" onclick="openPdf('./assets/c5_iutts_slides.pdf','아이유 TTS 파인튜닝 — 발표 자료');">📄 발표 자료 (PDF 팝업) →</a>
         </div>
       </div>
 
@@ -1023,7 +1023,7 @@ void Update()
         </div>
         <div class="project-links">
           <a href="https://github.com/yangchang-n/YYJG-streamlit" target="_blank">🔗 GitHub 저장소 →</a>
-          <a href="javascript:void(0)" onclick="openPdf('./assets/c6_flp_slides.pdf','For Life Photos — 발표 자료');">📄 발표 자료 (PDF) →</a>
+          <a href="javascript:void(0)" onclick="openPdf('./assets/c6_flp_slides.pdf','For Life Photos — 발표 자료');">📄 발표 자료 (PDF 팝업) →</a>
         </div>
       </div>
     </section>
