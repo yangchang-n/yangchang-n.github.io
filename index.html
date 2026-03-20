@@ -108,15 +108,10 @@
           <summary>주요 구현 사항</summary>
           <div class="card-section-body">
             <div class="func-list">
-              <div class="func-item">
-                <div class="func-header">SandSimulator</div>
+              <details class="func-item">
+                <summary>SandSimulator</summary>
                 <div class="func-body">
-                  <p class="func-desc">· 픽셀 단위 셀룰러 오토마타*로 모래 물리를 구현. 매 행마다 스캔 방향을 무작위로 반전시켜 좌우 편향 없는 자연스러운 낙하를 연출함</p>
-                  <p class="func-desc" style="padding-left:12px; font-size:12.5px; color:var(--text-muted);">* 각 모래 입자가 매 시뮬레이션 스텝마다 아래, 좌하, 우하 순서로 이동 가능 여부를 판단해 자연스러운 낙하와 모래 누적을 표현</p>
-                  <p class="func-desc">· 변경이 발생한 픽셀/셀만 dirty set에 등록해 해당 프레임에 변경된 영역만을 렌더링하여 연산을 최적화함</p>
-                  <details class="code-section">
-                    <summary>관련 코드 펼치기</summary>
-                    <pre class="code-box">public bool SimulatePhysics()
+                  <pre class="code-box">public bool SimulatePhysics()
 {
     bool sandMoved = false;
     for (int y = 1; y &lt; height - 1; y++)
@@ -149,17 +144,15 @@ bool UpdateSand(int x, int y)
     { /* 반대 대각 */ ... return true; }
     return false;
 }</pre>
-                  </details>
+                  <p class="func-desc">· 픽셀 단위 셀룰러 오토마타*로 모래 물리를 구현. 매 행마다 스캔 방향을 무작위로 반전시켜 좌우 편향 없는 자연스러운 낙하를 연출함</p>
+                  <p class="func-desc" style="padding-left:12px; font-size:12.5px; color:var(--text-muted);">* 각 모래 입자가 매 시뮬레이션 스텝마다 아래, 좌하, 우하 순서로 이동 가능 여부를 판단해 자연스러운 낙하와 모래 누적을 표현</p>
+                  <p class="func-desc">· 변경이 발생한 픽셀/셀만 dirty set에 등록해 해당 프레임에 변경된 영역만을 렌더링하여 연산을 최적화함</p>
                 </div>
-              </div>
-              <div class="func-item">
-                <div class="func-header">GameManager</div>
+              </details>
+              <details class="func-item">
+                <summary>GameManager</summary>
                 <div class="func-body">
-                  <p class="func-desc">· 프레임레이트와 무관하게 모래 물리가 일정한 속도로 동작하도록 경과 시간을 누적해 고정 간격으로 시뮬레이션을 실행, FPS가 급락해도 한 프레임에 최대 3회로 실행 횟수를 제한해 과다한 연산을 방지함</p>
-                  <p class="func-desc">· 모래 정착 판정을 단순 대기가 아닌 <code>isSandMoving</code> 플래그 확인 방식으로 구현함. 정착 후 점수 연산, 셀 제거, 추가 정착 대기를 코루틴으로 연쇄 처리함</p>
-                  <details class="code-section">
-                    <summary>관련 코드 펼치기</summary>
-                    <pre class="code-box">void UpdatePhysicsWithFixedTimestep()
+                  <pre class="code-box">void UpdatePhysicsWithFixedTimestep()
 {
     physicsAccumulator += Time.deltaTime;
     if (physicsAccumulator > PhysicsTimestep * 3)
@@ -191,17 +184,14 @@ IEnumerator WaitForSandSettlement()
     }
     SwitchPlayer();
 }</pre>
-                  </details>
+                  <p class="func-desc">· 프레임레이트와 무관하게 모래 물리가 일정한 속도로 동작하도록 경과 시간을 누적해 고정 간격으로 시뮬레이션을 실행, FPS가 급락해도 한 프레임에 최대 3회로 실행 횟수를 제한해 과다한 연산을 방지함</p>
+                  <p class="func-desc">· 모래 정착 판정을 단순 대기가 아닌 <code>isSandMoving</code> 플래그 확인 방식으로 구현함. 정착 후 점수 연산, 셀 제거, 추가 정착 대기를 코루틴으로 연쇄 처리함</p>
                 </div>
-              </div>
-              <div class="func-item">
-                <div class="func-header">BotController</div>
+              </details>
+              <details class="func-item">
+                <summary>BotController</summary>
                 <div class="func-body">
-                  <p class="func-desc">· 플레이어가 모래를 놓은 X좌표를 매 턴 수집해 평균과 표준편차를 계산, 모래의 중심과 분포를 수치화함</p>
-                  <p class="func-desc">· 표준편차를 오프셋으로 활용해 플레이어의 투하 분포에 대응하여 봇의 투하 위치를 결정함. 단계별로 투하 횟수(2개/3개)와 크기(0.8셀/1.0셀/1.2셀)를 다르게 적용해 난이도를 차별화함</p>
-                  <details class="code-section">
-                    <summary>관련 코드 펼치기</summary>
-                    <pre class="code-box">void CalculateStatistics()
+                  <pre class="code-box">void CalculateStatistics()
 {
     float sum = 0;
     foreach (int x in oasisSandXPositions) sum += x;
@@ -229,9 +219,10 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
     sandSimulator.DropSandChunk(averageX,           targetY, BrownSand);
     sandSimulator.DropSandChunk(averageX + offset,  targetY, BrownSand);
 }</pre>
-                  </details>
+                  <p class="func-desc">· 플레이어가 모래를 놓은 X좌표를 매 턴 수집해 평균과 표준편차를 계산, 모래의 중심과 분포를 수치화함</p>
+                  <p class="func-desc">· 표준편차를 오프셋으로 활용해 플레이어의 투하 분포에 대응하여 봇의 투하 위치를 결정함. 단계별로 투하 횟수(2개/3개)와 크기(0.8셀/1.0셀/1.2셀)를 다르게 적용해 난이도를 차별화함</p>
                 </div>
-              </div>
+              </details>
             </div>
           </div>
         </details>
@@ -268,15 +259,10 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
           <summary>주요 구현 사항</summary>
           <div class="card-section-body">
             <div class="func-list">
-              <div class="func-item">
-                <div class="func-header">PlayerController</div>
+              <details class="func-item">
+                <summary>PlayerController</summary>
                 <div class="func-body">
-                  <p class="func-desc">· 마우스 누적값을 <code>Quaternion.Euler</code>에 직접 대입해 카메라 기준점, 카메라, 플레이어 오브젝트 세 축의 회전을 단일 Update 흐름 안에서 동기화함</p>
-                  <p class="func-desc">· 낙하 하한선 판정 외에 맵 경사각을 미리 계산한 <code>tanY_Z</code>를 이용해 경사면 이탈 여부를 판별하고 자연스러운 복귀 지점을 결정함</p>
-                  <p class="func-desc">· 점프 쿨타임으로 연속 점프를 방지하고, 매 프레임 중력을 추가 적용해 충돌 등으로 플레이어가 의도치 않게 떠오르는 상황을 줄임</p>
-                  <details class="code-section">
-                    <summary>관련 코드 펼치기</summary>
-                    <pre class="code-box">void Update()
+                  <pre class="code-box">void Update()
 {
     // 카메라와 캐릭터 회전 동기화
     mouseX += Input.GetAxis("Mouse X");
@@ -312,17 +298,15 @@ void ExecuteHardBot()  // 3개 투하, 중간 크기
     }
     rigid.AddForce(Vector3.down * dragDownConstant);
 }</pre>
-                  </details>
+                  <p class="func-desc">· 마우스 누적값을 <code>Quaternion.Euler</code>에 직접 대입해 카메라 기준점, 카메라, 플레이어 오브젝트 세 축의 회전을 단일 Update 흐름 안에서 동기화함</p>
+                  <p class="func-desc">· 낙하 하한선 판정 외에 맵 경사각을 미리 계산한 <code>tanY_Z</code>를 이용해 경사면 이탈 여부를 판별하고 자연스러운 복귀 지점을 결정함</p>
+                  <p class="func-desc">· 점프 쿨타임으로 연속 점프를 방지하고, 매 프레임 중력을 추가 적용해 충돌 등으로 플레이어가 의도치 않게 떠오르는 상황을 줄임</p>
                 </div>
-              </div>
-              <div class="func-item">
-                <div class="func-header">SceneChanger</div>
+              </details>
+              <details class="func-item">
+                <summary>SceneChanger</summary>
                 <div class="func-body">
-                  <p class="func-desc">· 씬 전환을 코루틴으로 처리해 페이드 애니메이션이 끝난 뒤에 씬이 로드되도록 했으며, 알파값을 경과 시간 비율로 계산해 프레임레이트와 무관하게 전환 시간을 일정하게 유지함</p>
-                  <p class="func-desc">· <code>SetFadeAlpha</code>를 단일 메서드로 분리해 페이드인·아웃 양쪽에서 재사용하고 유지 보수를 쉽게 함</p>
-                  <details class="code-section">
-                    <summary>관련 코드 펼치기</summary>
-                    <pre class="code-box">// 씬 진입 시 페이드인, 씬 전환 시 페이드아웃 후 로드
+                  <pre class="code-box">// 씬 진입 시 페이드인, 씬 전환 시 페이드아웃 후 로드
 public void SceneOpen(string sceneName)
 {
     StartCoroutine(FadeIn(sceneName));
@@ -361,9 +345,10 @@ private void SetFadeAlpha(float alpha)
     color.a = alpha;
     fadeCoverImage.color = color;
 }</pre>
-                  </details>
+                  <p class="func-desc">· 씬 전환을 코루틴으로 처리해 페이드 애니메이션이 끝난 뒤에 씬이 로드되도록 했으며, 알파값을 경과 시간 비율로 계산해 프레임레이트와 무관하게 전환 시간을 일정하게 유지함</p>
+                  <p class="func-desc">· <code>SetFadeAlpha</code>를 단일 메서드로 분리해 페이드인·아웃 양쪽에서 재사용하고 유지 보수를 쉽게 함</p>
                 </div>
-              </div>
+              </details>
             </div>
           </div>
         </details>
@@ -396,14 +381,10 @@ private void SetFadeAlpha(float alpha)
           <summary>주요 구현 사항</summary>
           <div class="card-section-body">
             <div class="func-list">
-              <div class="func-item">
-                <div class="func-header">PlayerController</div>
+              <details class="func-item">
+                <summary>PlayerController</summary>
                 <div class="func-body">
-                  <p class="func-desc">· 미사일 발사 시 동일 위치에서 두 인스턴스를 생성하고 하나의 <code>leftSide</code> 값만 변경해 최소한의 코드로 좌우 분기 발사를 구현함</p>
-                  <p class="func-desc">· 입력 벡터를 정규화 후 <code>AddForce</code>로 적용해 대각선 이동 시에도 속도가 일정하게 유지됨</p>
-                  <details class="code-section">
-                    <summary>관련 코드 펼치기</summary>
-                    <pre class="code-box">void Update()
+                  <pre class="code-box">void Update()
 {
     pushForce = new Vector2(0, 0);
     if (bulletCooltime &lt; bulletMaxCooltime) bulletCooltime++;
@@ -434,17 +415,14 @@ private void SetFadeAlpha(float alpha)
     pushForce.Normalize();
     playerRb.AddForce(pushForce * 15);
 }</pre>
-                  </details>
+                  <p class="func-desc">· 미사일 발사 시 동일 위치에서 두 인스턴스를 생성하고 하나의 <code>leftSide</code> 값만 변경해 최소한의 코드로 좌우 분기 발사를 구현함</p>
+                  <p class="func-desc">· 입력 벡터를 정규화 후 <code>AddForce</code>로 적용해 대각선 이동 시에도 속도가 일정하게 유지됨</p>
                 </div>
-              </div>
-              <div class="func-item">
-                <div class="func-header">PlayerMissileController</div>
+              </details>
+              <details class="func-item">
+                <summary>PlayerMissileController</summary>
                 <div class="func-body">
-                  <p class="func-desc">· 발사 직후 좌우 초기 충격력을 가해 미사일이 바깥쪽으로 퍼진 뒤 적을 향하는 궤적을 물리 기반으로 연출함</p>
-                  <p class="func-desc">· 초기 쿨타임으로 분기 구간을 확보한 뒤 <code>bestFound</code> 플래그로 가장 가까운 적을 처음 1번만 탐색해 이후 방향을 고정하고, <code>sqrMagnitude</code>로 sqrt 연산을 생략해 탐색 효율을 높임</p>
-                  <details class="code-section">
-                    <summary>관련 코드 펼치기</summary>
-                    <pre class="code-box">void Start()
+                  <pre class="code-box">void Start()
 {
     missileRb = GetComponent&lt;Rigidbody2D&gt;();
     enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -481,9 +459,10 @@ void Update()
     }
     missileRb.AddForce(moveDirection * moveForce);
 }</pre>
-                  </details>
+                  <p class="func-desc">· 발사 직후 좌우 초기 충격력을 가해 미사일이 바깥쪽으로 퍼진 뒤 적을 향하는 궤적을 물리 기반으로 연출함</p>
+                  <p class="func-desc">· 초기 쿨타임으로 분기 구간을 확보한 뒤 <code>bestFound</code> 플래그로 가장 가까운 적을 처음 1번만 탐색해 이후 방향을 고정하고, <code>sqrMagnitude</code>로 sqrt 연산을 생략해 탐색 효율을 높임</p>
                 </div>
-              </div>
+              </details>
             </div>
           </div>
         </details>
@@ -537,7 +516,7 @@ void Update()
           </ul>
         </div>
         <div class="project-links">
-          <a href="javascript:void(0)" onclick="openPdf('./assets/c5_iutts_slides.pdf','아이유 TTS 파인튜닝 — 발표 자료');">📄 발표 자료 (PDF) →</a>
+          <a href="javascript:void(0)" onclick="openPdf('./assets/c5_iutts_slides.pdf','아이유 TTS 파인튜닝 — 발표 자료');">📄 발표 자료 (PDF 팝업) →</a>
         </div>
       </div>
 
@@ -563,14 +542,14 @@ void Update()
         </div>
         <div class="project-links">
           <a href="https://github.com/yangchang-n/YYJG-streamlit" target="_blank">🔗 GitHub 저장소 →</a>
-          <a href="javascript:void(0)" onclick="openPdf('./assets/c6_flp_slides.pdf','For Life Photos — 발표 자료');">📄 발표 자료 (PDF) →</a>
+          <a href="javascript:void(0)" onclick="openPdf('./assets/c6_flp_slides.pdf','For Life Photos — 발표 자료');">📄 발표 자료 (PDF 팝업) →</a>
         </div>
       </div>
     </section>
 
     <section id="trn-act">
-      <details class="main-section" open>
-        <summary><h2>교육 및 활동</h2></summary>
+      <div class="main-section">
+        <h2>교육 및 활동</h2>
         <div class="timeline">
           <div class="timeline-item">
             <p class="period">2025. 02</p>
@@ -591,12 +570,12 @@ void Update()
             <p>데이터분석 · 머신러닝 · 자연어처리 · 컴퓨터비전 교육 총 880시간 이수 및 수료</p>
           </div>
         </div>
-      </details>
+      </div>
     </section>
 
     <section id="edu-cert">
-      <details class="main-section" open>
-        <summary><h2>학력 및 자격증</h2></summary>
+      <div class="main-section">
+        <h2>학력 및 자격증</h2>
         <div class="timeline">
           <div class="timeline-item">
             <p class="period">2023. 09</p>
@@ -613,7 +592,7 @@ void Update()
             <p class="tl-title">연세대학교 이과대학 물리학과 입학</p>
           </div>
         </div>
-      </details>
+      </div>
     </section>
 
   </main>
