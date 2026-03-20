@@ -221,9 +221,30 @@
       color: var(--text-muted);
     }
 
-    /* ── 큰 섹션 ── */
-    .main-section > h2 {
+    /* ── 큰 섹션 펼치기 ── */
+    details.main-section > summary {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      list-style: none;
+      padding-bottom: 10px;
+      border-bottom: 1.5px solid var(--border);
       margin-bottom: 20px;
+    }
+    details.main-section > summary::-webkit-details-marker { display: none; }
+    details.main-section > summary::before {
+      content: '▶';
+      font-size: 9px;
+      color: var(--highlight);
+      transition: transform .2s;
+      flex-shrink: 0;
+    }
+    details.main-section[open] > summary::before { transform: rotate(90deg); }
+    details.main-section > summary h2 {
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-bottom: 0;
     }
 
     /* ── 큰 섹션 펼치기 ── */
